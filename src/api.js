@@ -80,12 +80,28 @@ class JoblyApi {
   }
 
 
-  /** Get job based on a search parameters given, 
+  /** Get job based on search parameters given, 
    * if none given, return all jobs.
    */
+  static async getJobsWithFilter(data) {
+    let minSalary;
+    let hasEquity;
+    let title;
 
+    if (data.minSalary !== undefined) {
+      minSalary = `minSalary=${data.minSalary}`;
+    }
+    if (data.hasEquity !== undefined) {
+      hasEquity = `hasEquity=${data.hasEquity}`;
+    }
+    if (data.title !== undefined) {
+      title = `title=${data.title}`;
+    }
 
+    let res = await this.request(`/jobs?${minSalary}&${hasEquity}&${title}`);
 
+    return res.jobs
+  }
 }
 
 // for now, put token ("testuser" / "password" on class)
