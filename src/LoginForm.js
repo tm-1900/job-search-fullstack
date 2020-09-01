@@ -16,8 +16,7 @@ function LoginForm({ loggedInUser }) {
     // redirect to /companies using history
   }
 
-  // renders JobCard based on companies
-  // clicking on a CompanyCard will redirect to /companies/:handle
+  
   return (
     <p>LoginForm</p>
   )
