@@ -1,14 +1,23 @@
-import React from "react";
+import React, { useState } from "react";
+import JoblyApi from './api';
 
 
 /**
- * App --> Routes --> CompanyDetail
+ * State:
+ * - company: object about this company from JoblyApi.getCompany method like
+ * {handle, name, description, numEmployees, logoURL, jobs}
+ * 
+ * Routes --> CompanyDetail --> JobCardList
  */
 
- function CompanyDetail(){
-   return(
-     <p>CompanyDetail</p>
-   )
- }
+function CompanyDetail(){
+  // useParams to grab handle to search for jobs within this company
+  const [company, setCompany] = useState(JoblyApi.getCompany(handle)); //  TODO make this not call every time function runs
 
- export default CompanyDetail;
+  // pass company.jobs to JobCardList as props
+  return(
+    <p>CompanyDetail</p>
+  )
+}
+
+export default CompanyDetail;

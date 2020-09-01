@@ -2,10 +2,17 @@ import React from "react";
 
 
 /**
- * App --> Routes --> JobList
+ * Props:
+ * - searchJobs: search function received from parent,
+ *   passed to SearchForm
+ * - jobs: array of job objects like 
+ *   [{id, title, salary, equity, companyHandle, companyName}, ...]
+ * 
+ * Routes --> JobList --> {SearchForm, JobCardList}
  */
+function JobList({ searchJobs, jobs }) {
 
-function JobList() {
+  // renders JobCard based on jobs
   return (
     <p>JobList</p>
   )
