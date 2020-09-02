@@ -50,24 +50,20 @@ class JoblyApi {
    * Data is an object like {minEmployees, maxEmployees, nameLike}
    */
 
-  static async getCompaniesWithFilter(data) {
-    let minEmployees;
-    let maxEmployees;
-    let name;
-
-    if (data.minEmployees !== undefined) {
-      minEmployees = `minEmployees=${data.minEmployees}`
-    };
-    if (data.maxEmployees !== undefined) {
-      maxEmployees = `maxEmployees=${data.maxEmployees}`;
+  static async getCompaniesWithFilter(data = {}) {
+    // send this as data instead of using query string
+    const p = {
+      minEmployees: data.minEmployees,
+      maxEmployees: data.maxEmployees,
+      name: data.name,
     }
-    if (data.name !== undefined) {
-      name = `name=${data.name}`
+    let res;
+    if (p.name === "") {
+      res = await this.request('companies')
+    } else {
+      res = await this.request('companies', p)
     }
-
-    let res = await this.request(`companies?${minEmployees}
-                                            &${maxEmployees}
-                                            &${name}`)
+    // console.log("this is res in getCompaniesWithFilter", res.companies)
     
     return res.companies
   }
