@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Homepage from './Homepage'
 import CompanyList from './CompanyList'
@@ -24,10 +24,30 @@ import Navbar from './Navbar'
  */
 function Routes() {
   const [user, setUser] = useState({}); // when user logs in, fill in details
-  //const [companies, setCompanies] = useState(JoblyApi.getCompaniesWithFilter);
-  const [companies, setCompanies] = useState([{}]);
-  //const [jobs, setJobs] = useState(JoblyApi.getJobsWithFilter);
-  const [jobs, setJobs] = useState([{}]);
+  const [companies, setCompanies] = useState(null);
+  const [searchCompany, setSearchCompany] = useState({});
+  // const [jobs, setJobs] = useState(JoblyApi.getJobsWithFilter);
+  // const [jobs, setJobs] = useState([{}]);
+
+  useEffect(function initialFetchCompanies() {
+    async function fetchCompanies() {
+      const result = await JoblyApi.getCompaniesWithFilter()
+      setCompanies(result)
+    }
+    fetchCompanies()
+  }, [])
+
+
+  useEffect(function fetchSearchedCompanies() {
+    async function fetchCompanies() {
+      // console.log("fetchCompanies ran")
+      const result = await JoblyApi.getCompaniesWithFilter(searchCompany)
+      // console.log("this is result in fetchSearchedCompanies", result)
+      setCompanies(result)
+    }
+    fetchCompanies();
+  }, [searchCompany])
+
 
   /** Gets data from LoginForm, makes an api request for that user,
    * if valid, setUser with api response. */
@@ -41,14 +61,15 @@ function Routes() {
 
   /** Gets data from SearchForm on CompanyList page, 
    *  makes an api request based on search input,
-   *  setCompanies with api response. */
-  function searchCompanies() {
-
+   *  setSearchCompany with api response. */
+  function searchCompanies(formData) {
+    // console.log("searchCompanies ran")
+    setSearchCompany(formData);
   }
 
   /** Gets data from SearchForm on JobList page, 
    *  makes an api request based on search input,
-   *  setJobss with api response. */
+   *  setJobs with api response. */
   function searchJobs() {
 
   }
@@ -85,7 +106,7 @@ function Routes() {
           <CompanyDetail />
         </Route>
         <Route exact path="/jobs">
-          <JobList searchJobs={searchJobs} jobs={jobs} />
+          {/* <JobList searchJobs={searchJobs} jobs={jobs} /> */}
         </Route>
         <Route exact path="/login">
           <LoginForm loggedInUser={loggedInUser} />

@@ -55,7 +55,51 @@ App --> Jobly ---> List --->{Companies, Jobs} --> {CompanyDetail, JobDetail}
     - Save, take info and send back to parent to setUserDetail()
 
     
-
+const fakeCompany = {
+    "handle": "anderson-arias-morrow",
+    "name": "Anderson, Arias and Morrow",
+    "description": "Somebody program how I. Face give away discussion view act inside. Your official relationship administration here.",
+    "numEmployees": 245,
+    "logoUrl": "/logos/logo3.png",
+    "jobs": [
+      {
+        "id": 7,
+        "title": "Technical brewer",
+        "salary": 157000,
+        "equity": "0"
+      },
+      {
+        "id": 18,
+        "title": "Embryologist, clinical",
+        "salary": 138000,
+        "equity": "0"
+      },
+      {
+        "id": 62,
+        "title": "Art gallery manager",
+        "salary": null,
+        "equity": "0.085"
+      },
+      {
+        "id": 95,
+        "title": "Writer",
+        "salary": 172000,
+        "equity": "0.091"
+      },
+      {
+        "id": 119,
+        "title": "Oceanographer",
+        "salary": null,
+        "equity": "0.097"
+      },
+      {
+        "id": 127,
+        "title": "Glass blower/designer",
+        "salary": 126000,
+        "equity": "0.099"
+      }
+    ]
+  }
 
 */
 
