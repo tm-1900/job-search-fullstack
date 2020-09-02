@@ -12,7 +12,7 @@ import JoblyApi from './api';
 
 function CompanyDetail(){
   // useParams to grab handle to search for jobs within this company
-  const [company, setCompany] = useState(JoblyApi.getCompany(handle)); //  TODO make this not call every time function runs
+  const [company, setCompany] = useState(JoblyApi.getCompany()); //  TODO make this not call every time function runs
 
   // pass company.jobs to JobCardList as props
   return(

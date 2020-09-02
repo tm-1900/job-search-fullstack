@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Switch, Redirect } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect, NavLink } from "react-router-dom";
 import Homepage from './Homepage'
 import CompanyList from './CompanyList'
 import CompanyDetail from './CompanyDetail'
@@ -8,6 +8,7 @@ import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ProfileForm from './ProfileForm'
 import JoblyApi from './api'
+import Navbar from './Navbar'
 
 
 /** Routes
@@ -22,14 +23,20 @@ import JoblyApi from './api'
  */
 function Routes() {
   const [user, setUser] = useState({}); // when user logs in, fill in details
-  const [companies, setCompanies] = useState(JoblyApi.getCompaniesWithFilter);
-  const [jobs, setJobs] = useState(JoblyApi.getJobsWithFilter);
+  //const [companies, setCompanies] = useState(JoblyApi.getCompaniesWithFilter);
+  const [companies, setCompanies] = useState([{}]);
+  //const [jobs, setJobs] = useState(JoblyApi.getJobsWithFilter);
+  const [jobs, setJobs] = useState([{}]);
 
   /** Gets data from LoginForm, makes an api request for that user,
    * if valid, setUser with api response. */
   function loggedInUser() {
 
   }
+
+  /** Reset user state be empty object. */
+  function logoutUser(){}
+
 
   /** Gets data from SearchForm on CompanyList page, 
    *  makes an api request based on search input,
@@ -45,11 +52,30 @@ function Routes() {
 
   }
 
+  /** 
+   * Get data from SignupFrom, makes an api request to add user
+   * into db.
+   */
+
+  function signupUser(){  }
+
+
+  /**
+   * Get data from ProfileForm, make api request to update user info.
+   * SetUser with new info.
+   */
+
+   function updateUser(){
+
+   }
+
+   
   return (
     <BrowserRouter>
+      <Navbar userInfo={user} logoutUser={logoutUser} />
       <Switch>
         <Route exact path="/">
-          <Homepage firstName={user.firstName} />
+          <Homepage first_name={user.first_name} />
         </Route>
         <Route exact path="/companies">
           <CompanyList searchCompanies={searchCompanies} companies={companies} />
@@ -64,10 +90,10 @@ function Routes() {
           <LoginForm loggedInUser={loggedInUser} />
         </Route>
         <Route exact path="/signup">
-          <SignupForm />
+          <SignupForm signupUser={signupUser}/>
         </Route>
         <Route exact path="/profile">
-          <ProfileForm />
+          <ProfileForm updateUser={updateUser} userInfo={user}/>
         </Route>
         <Redirect to="/" />
       </Switch>

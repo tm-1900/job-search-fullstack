@@ -1,3 +1,5 @@
+import axios from "axios";
+
 
 const BASE_URL = process.env.REACT_APP_BASE_URL || "http://localhost:3001";
 
@@ -102,6 +104,9 @@ class JoblyApi {
 
     return res.jobs
   }
+
+  /**TODO. Add function to update user  */
+
 }
 
 // for now, put token ("testuser" / "password" on class)

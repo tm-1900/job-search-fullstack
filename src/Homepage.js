@@ -4,12 +4,12 @@ import React from 'react';
  * Render homepage.
  * 
  * Props:
- * - firstName: user's first name or undefined if not logged in
+ * - first_name: user's first name or undefined if not logged in
  * 
  * App --> Routes --> Homepage
  */
 
-function Homepage({ firstName }){
+function Homepage({ first_name }){
 
   // function for checking if firstName is not undefined
   // if it is undefined, return login & signup buttons
