@@ -15,11 +15,12 @@ import Navbar from './Navbar'
  * 
  * State:
  * - user: object of user details like {username, firstName, lastName, email}
- * - companies: default array of company objects like 
- *   [{handle, name, description, numEmployees, logoUrl},...]
+ * - companies: default array of company objects 
+ *      like [{handle, name, description, numEmployees, logoUrl},...]
  * 
  * App -> Routes -> { Homepage, CompanyList, CompanyDetail,
  *  JobList, LoginForm, SignupForm, ProfileForm }
+ * 
  */
 function Routes() {
   const [user, setUser] = useState({}); // when user logs in, fill in details
