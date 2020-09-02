@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { BrowserRouter, Route, Switch, Redirect, NavLink } from "react-router-dom";
+import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
 import Homepage from './Homepage'
 import CompanyList from './CompanyList'
 import CompanyDetail from './CompanyDetail'
@@ -69,7 +69,7 @@ function Routes() {
 
    }
 
-   
+
   return (
     <BrowserRouter>
       <Navbar userInfo={user} logoutUser={logoutUser} />
