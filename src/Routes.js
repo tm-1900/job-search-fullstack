@@ -24,7 +24,7 @@ import Navbar from './Navbar'
  *  JobList, LoginForm, SignupForm, ProfileForm }
  * 
  */
-function Routes({setCurrentUserToken, logoutUser, signupUser}) {
+function Routes({ setCurrentUserToken, setCurrentUser, logoutUser, signupUser}) {
   const [user, setUser] = useState({}); // when user logs in, fill in details
   const [companies, setCompanies] = useState([{}]);
   const [jobs, setJobs] = useState([{}]);
@@ -73,10 +73,12 @@ function Routes({setCurrentUserToken, logoutUser, signupUser}) {
         </Route>
 
         <Route exact path="/login">
-          <LoginForm setCurrentUserToken={setCurrentUserToken} />
+          <LoginForm setCurrentUserToken={setCurrentUserToken}
+                      setCurrentUser={setCurrentUser} />
         </Route>
         <Route exact path="/signup">
-          <SignupForm signupUser={signupUser} />
+          <SignupForm setCurrentUserToken={setCurrentUserToken}
+            setCurrentUser={setCurrentUser} />
         </Route>
         <Redirect to="/" />
       </Switch>

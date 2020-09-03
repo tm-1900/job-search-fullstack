@@ -14,26 +14,21 @@ function App() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  
+  //console.log('this is token', currentUserToken)
+  //console.log('this is currentUser', currentUser)
 
 
   /** Reset user state be empty object. */
   function logoutUser() { }
 
 
-  /** 
-   * Get data from SignupFrom, makes an api request to add user
-   * into db.
-   */
-
-  function signupUser() { }
-
-
   return (
     <div className="App">
       {/* <nav class="Navigation navbar navbar-expand-md"> */}
       <UserContext.Provider value={currentUser} >
-        <Routes setCurrentUserToken={setCurrentUserToken} logoutUser={logoutUser} signupUser={signupUser}/>
+        <Routes setCurrentUserToken={setCurrentUserToken} 
+                setCurrentUser={setCurrentUser}
+                logoutUser={logoutUser} />
       </UserContext.Provider>
       {/* </nav> */}
     </div>
