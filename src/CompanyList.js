@@ -6,13 +6,13 @@ import SearchForm from './SearchForm'
 
 /**
  * Renders CompanyList.
- *    - by default, all companies will be shown
+ *    - By default, all companies will be shown.
  *    - If user types inputs into SearchBox, CompanyList will be filtered
- *          based on inputs
+ *          based on inputs.
  *    - A click on company card will redirect user to /companies/:handle
  * 
  * Props: 
- * - setCompanies: received function from parent; will set new company list 
+ * - setCompanies: function received from parent; will set new company list 
  *      when user search for a particular company.
  * - companies: array of company objects 
  *              like [{handle, name, description, numEmployees, logoUrl},...]
@@ -29,8 +29,13 @@ function CompanyList({ companies, setCompanies }) {
 
   const [searchCompanyInput, setSearchCompanyInput] = useState({});
   const [error, setError] = useState(null);
+  //todo. can we use this instead of checking if company is null?
+  const [isLoading, setIsLoading] = useState(true);
 
-  /**Return companies based on search inputs */
+
+  /** Makes an axios API request based on search input,
+   *  setSearchCompanyInput with api response. 
+   *  Return companies based on search inputs.  */
   useEffect(function fetchSearchedCompanies() {
     async function fetchCompanies() {
       // console.log("fetchCompanies ran")
@@ -52,27 +57,20 @@ function CompanyList({ companies, setCompanies }) {
   }, [searchCompanyInput, setCompanies])
 
 
-  /** Gets data from SearchForm on CompanyList page, 
-   *  makes an api request based on search input,
-   *  setSearchCompanyInput with api response. */
+  /** Get formData from SearchForm on CompanyList page. */
   function searchCompanies(formData) {
     // console.log("searchCompanies ran")
     setSearchCompanyInput(formData);
   }
 
+  //Todo. ask about error message     
+  /**Handles loading, errors, JobCardList and renders accordingly. */
   function showLoadingOrCompanies() {
+    const companyCards = companies.map((c) => <CompanyCard key={c.handle} company={c} />)
 
-    if (companies === null){
-      return (<p>Loading...</p>)
-    } else if (error) {  //Todo. ask about error message 
-      return (<p> {error} </p>)
-    } else {
-      return (
-        <>
-          {companies.map((c) => <CompanyCard key={c.handle} company={c} />)}
-        </>
-      )
-    }
+    if (companies === null) return (<p>Loading...</p>);
+    else if (error) return (<p> {error} </p>);
+    else return (<div>{companyCards}</div>)
   }
 
   return (

@@ -65,19 +65,15 @@ function JobList({ jobs, setJobs }) {
   }, [setJobs, searchJobInput])
 
 
-  /**Handles loading, errors, and JobCardList and renders accordingly. */
+  /**Handles loading, errors, JobCardList and renders accordingly. */
   function showLoadingOrJobs() {
-    if (jobs === null) {
-      return (<p>Loading...</p>)
-    } else if (error) {
-      return (<p> {error} </p>)
-    } else {
-      return (
-        <div>
-          <JobCardList jobs={jobs}/>
-        </div>
-      )
-    }
+
+    if (jobs === null) return (<p>Loading...</p>)
+    else if (error) return (<p> {error} </p>)
+    else return ( <div> 
+                        <JobCardList jobs={jobs}/> 
+                  </div>)
+    
   }
 
   // renders JobCard based on jobs inputs
