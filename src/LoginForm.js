@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import JoblyApi from './api';
-import { useHistory } from "react-router-dom";
+import {useHistory} from "react-router-dom"
 
 /**
  * Props:
@@ -14,49 +14,15 @@ import { useHistory } from "react-router-dom";
  * App --> Routes --> LoginForm
  */
 
-function LoginForm({ setCurrentUserToken, setCurrentUser }) {
+function LoginForm({ login }) {
   const initialState = { username: "", password: "" };
   const [formData, setFormData] = useState(initialState);
-  const [userLoginInfo, setUserLoginInfo] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
-  const [submit, setSubmit] = useState(false);
 
   const history = useHistory();
 
 
-  /** Gets data from LoginForm, makes an api request for that user,
- * if valid, setUser with api response. */
-  // function loggedInUser(formData) {
-
-  // }
-
-  // todo: filter out password from login form to not be in state
-  //useEffect get backend info and store token
-  useEffect(function fetchUserToken() {
-    async function fetchUser() {
-      try {
-        const result = await JoblyApi.getToken(userLoginInfo);
-        const userDetail = await JoblyApi.getUser(userLoginInfo.username);
-
-        setCurrentUserToken(result)
-        setCurrentUser(userDetail)
-        history.push("/companies");
-
-      } catch (err) {
-        //console.log("this is err after bad login", err);
-        setError(err);
-
-      } finally {
-        setIsLoading(false);
-      }
-    };
-    fetchUser();
-  }, [userLoginInfo, setCurrentUserToken, setCurrentUser, history]);
-
-
   //Must show Alert message to validate form input
-
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -66,19 +32,21 @@ function LoginForm({ setCurrentUserToken, setCurrentUser }) {
     }));
   }
 
-  function handleSubmit(evt) {
+  async function handleSubmit(evt) {
     // handle form input to send to parent
     // redirect to /companies using history
     evt.preventDefault();
-    setUserLoginInfo(formData);
-    setFormData(initialState);
-    setSubmit(true);
+    try {
+      await login(formData);
+      history.push("/companies");
+    } catch (err) {
+      setError(err);
+    }
   }
 
-  function showLoadingOrError() {
-    if (isLoading) return (<p>Loading...</p>);
-    if (error && submit) return (<p> {error} </p>);
-    //console.log("this is error in showLoadingOrError", error)
+  function showError() {
+    if (error) return (<p> {error} </p>);
+    //console.log("this is error in showError", error)
   }
 
 
@@ -103,7 +71,7 @@ function LoginForm({ setCurrentUserToken, setCurrentUser }) {
         />
         <button>Log in</button>
       </form>
-      {showLoadingOrError()}
+      {showError()}
     </>
   )
 }

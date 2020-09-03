@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { BrowserRouter, Route, Switch, Redirect} from "react-router-dom";
+import { Route, Switch, Redirect} from "react-router-dom";
 import Homepage from './Homepage'
 import CompanyList from './CompanyList'
 import CompanyDetail from './CompanyDetail'
@@ -24,7 +24,7 @@ import Navbar from './Navbar'
  *  JobList, LoginForm, SignupForm, ProfileForm }
  * 
  */
-function Routes({ setCurrentUserToken, setCurrentUser, logoutUser, signupUser}) {
+function Routes({ login, logoutUser, signupUser}) {
   const [user, setUser] = useState({}); // when user logs in, fill in details
   const [companies, setCompanies] = useState([{}]);
   const [jobs, setJobs] = useState([{}]);
@@ -52,7 +52,7 @@ function Routes({ setCurrentUserToken, setCurrentUser, logoutUser, signupUser}) 
 
 
   return (
-    <BrowserRouter>
+    <>
       <Navbar userInfo={user} logoutUser={logoutUser} />
       <Switch>
 
@@ -73,16 +73,14 @@ function Routes({ setCurrentUserToken, setCurrentUser, logoutUser, signupUser}) 
         </Route>
 
         <Route exact path="/login">
-          <LoginForm setCurrentUserToken={setCurrentUserToken}
-                      setCurrentUser={setCurrentUser} />
+          <LoginForm login={login} />
         </Route>
         <Route exact path="/signup">
-          <SignupForm setCurrentUserToken={setCurrentUserToken}
-            setCurrentUser={setCurrentUser} />
+          <SignupForm />
         </Route>
         <Redirect to="/" />
       </Switch>
-    </BrowserRouter>
+    </>
   )
 }
 
