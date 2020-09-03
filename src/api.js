@@ -57,13 +57,14 @@ class JoblyApi {
       maxEmployees: data.maxEmployees,
       name: data.name,
     }
+    
     let res;
     if (p.name === "") {
       res = await this.request('companies')
     } else {
       res = await this.request('companies', p)
     }
-    // console.log("this is res in getCompaniesWithFilter", res.companies)
+    console.log("this is res in getCompaniesWithFilter", res.companies)
     
     return res.companies
   }
@@ -81,22 +82,20 @@ class JoblyApi {
   /** Get job based on search parameters given, 
    * if none given, return all jobs.
    */
-  static async getJobsWithFilter(data) {
-    let minSalary;
-    let hasEquity;
-    let title;
-
-    if (data.minSalary !== undefined) {
-      minSalary = `minSalary=${data.minSalary}`;
-    }
-    if (data.hasEquity !== undefined) {
-      hasEquity = `hasEquity=${data.hasEquity}`;
-    }
-    if (data.title !== undefined) {
-      title = `title=${data.title}`;
+  static async getJobsWithFilter(data={}) {
+    const jobs = {
+      title: data.name,
+      minSalary: data.minSalary,
+      hasEquity: data.hasEquity,
     }
 
-    let res = await this.request(`/jobs?${minSalary}&${hasEquity}&${title}`);
+    let res;
+    if (jobs.title === "") {
+      res = await this.request('jobs')
+    } else {
+      res = await this.request('jobs', jobs)
+    }
+    console.log("this is res in getJobsWithFilter", res.jobs)
 
     return res.jobs
   }
