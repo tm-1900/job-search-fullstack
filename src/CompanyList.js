@@ -1,40 +1,81 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import JoblyApi from './api';
 import CompanyCard from './CompanyCard';
 import SearchForm from './SearchForm'
 
 
 /**
- * Props:
- * - searchCompanies: search function received from parent,
- *   passed to SearchForm 
- * - companies: array of company objects like 
- *   [{handle, name, description, numEmployees, logoUrl},...]
+ * Renders CompanyList.
+ *    - by default, all companies will be shown
+ *    - If user types inputs into SearchBox, CompanyList will be filtered
+ *          based on inputs
+ *    - A click on company card will redirect user to /companies/:handle
+ * 
+ * Props: 
+ * - setCompanies: received function from parent; will set new company list 
+ *      when user search for a particular company.
+ * - companies: array of company objects 
+ *              like [{handle, name, description, numEmployees, logoUrl},...]
+ * 
+ * State: 
+ *  - searchCompanyInput
+ *  - error
  * 
  * Routes --> CompanyList --> { SearchForm, CompanyCard }
  */
 
-function CompanyList({ companies, searchCompanies }){
-  
-
-  // renders CompanyCard based on companies
-  // clicking on a CompanyCard will redirect to /companies/:handle
-  // have a SearchBox 
+function CompanyList({ companies, setCompanies }) {
   // console.log("this is companies", companies)
 
+  const [searchCompanyInput, setSearchCompanyInput] = useState({});
+  const [error, setError] = useState(null);
+
+  /**Return companies based on search inputs */
+  useEffect(function fetchSearchedCompanies() {
+    async function fetchCompanies() {
+      // console.log("fetchCompanies ran")
+      let result;
+      try {
+        result = await JoblyApi.getCompaniesWithFilter(searchCompanyInput)
+        // console.log("this is result in fetchSearchedCompanies", result)
+
+        if (result.length === 0) {
+          throw new Error("Sorry, no results were found!")
+        }
+
+        setCompanies(result)
+      } catch (err) {
+        setError(err.message);
+      }
+    }
+    fetchCompanies();
+  }, [searchCompanyInput, setCompanies])
+
+
+  /** Gets data from SearchForm on CompanyList page, 
+   *  makes an api request based on search input,
+   *  setSearchCompanyInput with api response. */
+  function searchCompanies(formData) {
+    // console.log("searchCompanies ran")
+    setSearchCompanyInput(formData);
+  }
+
   function showLoadingOrCompanies() {
-    if (companies !== null) {
+
+    if (companies === null){
+      return (<p>Loading...</p>)
+    } else if (error) {  //Todo. ask about error message 
+      return (<p> {error} </p>)
+    } else {
       return (
         <>
-          {companies.map(c => <CompanyCard company={c} />)}
+          {companies.map((c) => <CompanyCard key={c.handle} company={c} />)}
         </>
       )
-    } else {
-      return <p>Loading...</p>
     }
   }
 
-  return(
+  return (
     <div>
       <SearchForm submitSearch={searchCompanies} />
       {showLoadingOrCompanies()}
