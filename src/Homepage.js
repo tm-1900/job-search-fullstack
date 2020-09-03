@@ -1,7 +1,7 @@
 import React from 'react';
 
 /**
- * Render homepage.
+ * Renders homepage.
  * 
  * Props:
  * - first_name: user's first name or undefined if not logged in

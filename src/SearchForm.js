@@ -10,12 +10,16 @@ import React, { useState } from 'react';
  * 
  * { CompanyList, JobList } --> SearchForm
  */
+
 function SearchForm({ submitSearch }) {
-  const initialState = { 
+  const initialState = { //todo. name and title
     name: "",
   }
+
   const [formData, setFormData] = useState(initialState)
 
+
+  /** handle form inputs */
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData(fData => ({
@@ -24,6 +28,7 @@ function SearchForm({ submitSearch }) {
     }));
   }
 
+  
   function handleSubmit(evt) {
     evt.preventDefault();
     submitSearch(formData);

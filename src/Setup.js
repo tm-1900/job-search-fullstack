@@ -104,3 +104,8 @@ const fakeCompany = {
 */
 
 
+// Step 6: current User
+// - use context to make user is loggedin/not -> make sepearate file
+// - token will be in state (App)
+// - function in api.js to register a user ==>  creating the token
+// - function in api.js to login user ==> verify token

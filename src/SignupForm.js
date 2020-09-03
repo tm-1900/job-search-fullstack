@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 
-
 /**
  * Prop:
  *  - signupUser function received from parent
