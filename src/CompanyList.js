@@ -35,20 +35,22 @@ function CompanyList({ companies, setCompanies }) {
 
   /** Makes an axios API request based on search input,
    *  setSearchCompanyInput with api response. 
-   *  Return companies based on search inputs.  */
+   *  Return companies based on search inputs.  
+   * 
+   * */
   useEffect(function fetchSearchedCompanies() {
     async function fetchCompanies() {
       // console.log("fetchCompanies ran")
       let result;
       try {
         result = await JoblyApi.getCompaniesWithFilter(searchCompanyInput)
-        // console.log("this is result in fetchSearchedCompanies", result)
 
         if (result.length === 0) {
           throw new Error("Sorry, no results were found!")
         }
 
         setCompanies(result)
+
       } catch (err) {
         setError(err.message);
       }
@@ -57,20 +59,22 @@ function CompanyList({ companies, setCompanies }) {
   }, [searchCompanyInput, setCompanies])
 
 
-  /** Get formData from SearchForm on CompanyList page. */
+  /** Get formData from SearchForm on CompanyList page. 
+   */
   function searchCompanies(formData) {
-    // console.log("searchCompanies ran")
+
     setSearchCompanyInput(formData);
   }
 
   //Todo. ask about error message     
-  /**Handles loading, errors, JobCardList and renders accordingly. */
+  /**Handles loading, errors, JobCardList and renders accordingly. 
+   */
   function showLoadingOrCompanies() {
-    const companyCards = companies.map((c) => <CompanyCard key={c.handle} company={c} />)
+    //const companyCards = companies.map((c) => <CompanyCard key={c.handle} company={c} />)
 
     if (companies === null) return (<p>Loading...</p>);
     else if (error) return (<p> {error} </p>);
-    else return (<div>{companyCards}</div>)
+    else return (<div> {companies.map((c) => <CompanyCard key={c.handle} company={c} />)} </div>)
   }
 
   return (
@@ -82,3 +86,6 @@ function CompanyList({ companies, setCompanies }) {
 }
 
 export default CompanyList;
+
+// console.log("searchCompanies ran")
+// console.log("this is result in fetchSearchedCompanies", result)

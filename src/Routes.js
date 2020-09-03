@@ -40,23 +40,6 @@ function Routes() {
     fetchCompanies()
   }, [])
 
-  /** Gets data from LoginForm, makes an api request for that user,
-   * if valid, setUser with api response. */
-  function loggedInUser() {
-
-  }
-
-  /** Reset user state be empty object. */
-  function logoutUser(){}
-
-
-  /** 
-   * Get data from SignupFrom, makes an api request to add user
-   * into db.
-   */
-
-  function signupUser(){  }
-
 
   /**
    * Get data from ProfileForm, make api request to update user info.

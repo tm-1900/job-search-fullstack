@@ -25,10 +25,12 @@ import JobCardList from "./JobCardList";
  */
 
 function JobList({ jobs, setJobs }) {
-  console.log("this this jobslist", jobs)
+  console.log("this is jobs", jobs)
 
   const [searchJobInput, setSearchJobInput] = useState({});
   const [error, setError] = useState(null);
+  //todo. can we use this instead of checking if company is null?
+  const [isLoading, setIsLoading] = useState(true);
 
 
   /** Gets data from SearchForm on JobList page, 

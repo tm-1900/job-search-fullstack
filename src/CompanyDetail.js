@@ -21,8 +21,12 @@ function CompanyDetail() {
   //Todo. what's the diff between null and {}
   const [company, setCompany] = useState(null);
   const [error, setError] = useState(null);
+  //todo. can we use this instead of checking if company is null?
+  const [isLoading, setIsLoading] = useState(true);
 
-  /**Fetch companies from API based on search inputs */
+
+  /**Fetch companies from API based on search inputs 
+  */
   useEffect(function fetchClickedCompany() {
     async function fetchCompany() {
       try {
@@ -35,21 +39,19 @@ function CompanyDetail() {
     fetchCompany();
   }, [handle, setCompany]);
 
-  /** Handles loading, errors, and JobCardList, and renders accordingly. */
-  function showLoadingOrCompany(){
-    if (company === null) {
-      return (<p>Loading...</p>)
-    } else if (error) {
-      return (<p> Error! {error}</p>)
-    } else {
-      return (
-        <div>
-          <h4>{company.name}</h4>
-          <p>{company.description}</p>
-          <JobCardList jobs={company.jobs} />
-        </div>
-      )
-    }
+
+  /** Handles loading, errors, and JobCardList, and renders accordingly. 
+  */
+  function showLoadingOrCompany() {
+    //const companyJobCardList = ()
+
+    if (company === null) return <p>Loading...</p>
+    else if (error) return <p> Error! {error}</p>
+    else return (<div>
+      <h4>{company.name}</h4>
+      <p>{company.description}</p>
+      <JobCardList jobs={company.jobs} />
+    </div>)
   }
 
   // pass company.jobs to JobCardList as props

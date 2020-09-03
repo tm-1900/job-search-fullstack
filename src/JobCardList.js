@@ -11,6 +11,7 @@ import JobCard from "./JobCard";
  * JobCardList --> JobCard
  */
 function JobCardList({jobs}){
+  console.log("this is jobs", jobs)
 
   const jobCards = jobs.map(j => <JobCard key={j.id} job={j}/>)
 
