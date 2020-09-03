@@ -5,6 +5,8 @@ import { useHistory } from "react-router-dom";
 /**
  * Props:
  * - loggedInUser: login function received from parent 
+ * - setCurrentUser
+ * - setCurrentUserToken
  * 
  * State:
  *  - formData
@@ -12,12 +14,13 @@ import { useHistory } from "react-router-dom";
  * App --> Routes --> LoginForm
  */
 
-function LoginForm({ setCurrentUserToken }) {
+function LoginForm({ setCurrentUserToken, setCurrentUser }) {
   const initialState = { username: "", password: "" };
   const [formData, setFormData] = useState(initialState);
   const [userLoginInfo, setUserLoginInfo] = useState({});
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [submit, setSubmit] = useState(false);
 
   const history = useHistory();
 
@@ -25,7 +28,7 @@ function LoginForm({ setCurrentUserToken }) {
   /** Gets data from LoginForm, makes an api request for that user,
  * if valid, setUser with api response. */
   // function loggedInUser(formData) {
-    
+
   // }
 
   // todo: filter out password from login form to not be in state
@@ -34,11 +37,14 @@ function LoginForm({ setCurrentUserToken }) {
     async function fetchUser() {
       try {
         const result = await JoblyApi.getToken(userLoginInfo);
+        const userDetail = await JoblyApi.getUser(userLoginInfo.username);
+
         setCurrentUserToken(result)
+        setCurrentUser(userDetail)
         history.push("/companies");
+
       } catch (err) {
-        console.log("this is err after bad login", err);
-        console.log("this is err.message after bad login", err[0]);
+        //console.log("this is err after bad login", err);
         setError(err);
 
       } finally {
@@ -46,7 +52,7 @@ function LoginForm({ setCurrentUserToken }) {
       }
     };
     fetchUser();
-  }, [userLoginInfo]);
+  }, [userLoginInfo, setCurrentUserToken, setCurrentUser, history]);
 
 
   //Must show Alert message to validate form input
@@ -66,12 +72,13 @@ function LoginForm({ setCurrentUserToken }) {
     evt.preventDefault();
     setUserLoginInfo(formData);
     setFormData(initialState);
+    setSubmit(true);
   }
 
   function showLoadingOrError() {
     if (isLoading) return (<p>Loading...</p>);
-    if (error) return (<p> {error} </p>);
-    console.log("this is error in showLoadingOrError", error)
+    if (error && submit) return (<p> {error} </p>);
+    //console.log("this is error in showLoadingOrError", error)
   }
 
 
