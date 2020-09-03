@@ -59,7 +59,7 @@ class JoblyApi {
     }
 
     const res = await this.request('companies', searchParams)
-    console.log("this is res in getCompanies", res.companies)
+    // console.log("this is res in getCompanies", res.companies)
 
     return res.companies
   }
@@ -87,15 +87,16 @@ class JoblyApi {
     
     const res = await this.request('jobs', searchJobParams)
     
-    console.log("this is res in getJobs", res.jobs)
+    // console.log("this is res in getJobs", res.jobs)
 
     return res.jobs
   }
 
   /** Get user token from login form */
   static async getToken(data){
+    console.log("this is data in getToken", data)
 
-    const res = await this.request("auth/token", data)
+    const res = await this.request("auth/token", data, "post")
     console.log("this is res in getToken", res.token)
     return res.token
   }

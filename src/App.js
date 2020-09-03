@@ -14,28 +14,8 @@ function App() {
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
 
-  //useEffect get backend info and store token
-  useEffect(function fetchUserToken(){
-    async function fetchUser(){
-      try{
-        const result = await JoblyApi.getToken();
-        setCurrentUserToken(result)
+  
 
-      }catch(err){
-        setError(err.message);
-      }finally{
-        setIsLoading(false);
-      }
-    };
-    fetchUser();
-  }, []); //todo.
-
-
-  /** Gets data from LoginForm, makes an api request for that user,
- * if valid, setUser with api response. */
-  function loggedInUser() {
-
-  }
 
   /** Reset user state be empty object. */
   function logoutUser() { }
@@ -49,13 +29,11 @@ function App() {
   function signupUser() { }
 
 
-
-
   return (
     <div className="App">
       {/* <nav class="Navigation navbar navbar-expand-md"> */}
       <UserContext.Provider value={currentUser} >
-        <Routes loggedInUser={loggedInUser} logoutUser={logoutUser} signupUser={signupUser}/>
+        <Routes setCurrentUserToken={setCurrentUserToken} logoutUser={logoutUser} signupUser={signupUser}/>
       </UserContext.Provider>
       {/* </nav> */}
     </div>

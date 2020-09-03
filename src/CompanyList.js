@@ -26,7 +26,7 @@ import SearchForm from './SearchForm'
  */
 
 function CompanyList({ companies, setCompanies }) {
-  console.log("this is companies", companies)
+  // console.log("this is companies", companies)
 
   const [searchCompanyInput, setSearchCompanyInput] = useState({});
   const [error, setError] = useState(null);
