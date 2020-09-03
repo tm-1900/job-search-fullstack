@@ -50,22 +50,17 @@ class JoblyApi {
    * Data is an object like {minEmployees, maxEmployees, nameLike}
    */
 
-  static async getCompaniesWithFilter(data = {}) {
-    // send this as data instead of using query string
-    const p = {
-      minEmployees: data.minEmployees,
-      maxEmployees: data.maxEmployees,
-      name: data.name,
+  static async getCompanies(data = {}) {
+
+    const searchParams = {
+      minEmployees: data.minEmployees || undefined,
+      maxEmployees: data.maxEmployees || undefined,
+      name: data.searchTerm || undefined
     }
-    
-    let res;
-    if (p.name === "") {
-      res = await this.request('companies')
-    } else {
-      res = await this.request('companies', p)
-    }
-    console.log("this is res in getCompaniesWithFilter", res.companies)
-    
+
+    const res = await this.request('companies', searchParams)
+    console.log("this is res in getCompanies", res.companies)
+
     return res.companies
   }
 
@@ -82,22 +77,27 @@ class JoblyApi {
   /** Get job based on search parameters given, 
    * if none given, return all jobs.
    */
-  static async getJobsWithFilter(data={}) {
-    const jobs = {
-      title: data.name,
-      minSalary: data.minSalary,
-      hasEquity: data.hasEquity,
-    }
+  static async getJobs(data = {}) {
 
-    let res;
-    if (jobs.title === "") {
-      res = await this.request('jobs')
-    } else {
-      res = await this.request('jobs', jobs)
-    }
-    console.log("this is res in getJobsWithFilter", res.jobs)
+    const searchJobParams = {
+      title: data.searchTerm || undefined,
+      minSalary: data.minSalary || undefined,
+      hasEquity: data.hasEquity || undefined,
+    }    
+    
+    const res = await this.request('jobs', searchJobParams)
+    
+    console.log("this is res in getJobs", res.jobs)
 
     return res.jobs
+  }
+
+  /** Get user token from login form */
+  static async getToken(data){
+
+    const res = await this.request("auth/token", data)
+    console.log("this is res in getToken", res.token)
+    return res.token
   }
 
   /**TODO. Add function to update user  */

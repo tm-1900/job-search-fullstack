@@ -1,13 +1,34 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import './App.css';
 import Routes from './Routes';
 import "bootstrap/dist/css/bootstrap.css";
+import UserContext from './UserContext';
+import JoblyApi from "./api";
+
+
 
 function App() {
   //add token as state
-  //state for currentUser
+  const [currentUser, setCurrentUser] = useState({});
+  const [currentUserToken, setCurrentUserToken] = useState({});
+  const [error, setError] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   //useEffect get backend info and store token
+  useEffect(function fetchUserToken(){
+    async function fetchUser(){
+      try{
+        const result = await JoblyApi.getToken();
+        setCurrentUserToken(result)
+
+      }catch(err){
+        setError(err.message);
+      }finally{
+        setIsLoading(false);
+      }
+    };
+    fetchUser();
+  }, []); //todo.
 
 
   /** Gets data from LoginForm, makes an api request for that user,
@@ -28,10 +49,14 @@ function App() {
   function signupUser() { }
 
 
+
+
   return (
     <div className="App">
       {/* <nav class="Navigation navbar navbar-expand-md"> */}
-      <Routes />
+      <UserContext.Provider value={currentUser} >
+        <Routes loggedInUser={loggedInUser} logoutUser={logoutUser} signupUser={signupUser}/>
+      </UserContext.Provider>
       {/* </nav> */}
     </div>
   );

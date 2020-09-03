@@ -20,16 +20,16 @@ import SearchForm from './SearchForm'
  * State: 
  *  - searchCompanyInput
  *  - error
+ *  - isLoading - default True
  * 
  * Routes --> CompanyList --> { SearchForm, CompanyCard }
  */
 
 function CompanyList({ companies, setCompanies }) {
-  // console.log("this is companies", companies)
+  console.log("this is companies", companies)
 
   const [searchCompanyInput, setSearchCompanyInput] = useState({});
   const [error, setError] = useState(null);
-  //todo. can we use this instead of checking if company is null?
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -43,16 +43,18 @@ function CompanyList({ companies, setCompanies }) {
       // console.log("fetchCompanies ran")
       let result;
       try {
-        result = await JoblyApi.getCompaniesWithFilter(searchCompanyInput)
+        result = await JoblyApi.getCompanies(searchCompanyInput)
 
         if (result.length === 0) {
           throw new Error("Sorry, no results were found!")
         }
 
         setCompanies(result)
-
       } catch (err) {
         setError(err.message);
+      } finally {
+        setIsLoading(false)
+
       }
     }
     fetchCompanies();
@@ -66,15 +68,12 @@ function CompanyList({ companies, setCompanies }) {
     setSearchCompanyInput(formData);
   }
 
-  //Todo. ask about error message     
   /**Handles loading, errors, JobCardList and renders accordingly. 
    */
   function showLoadingOrCompanies() {
-    //const companyCards = companies.map((c) => <CompanyCard key={c.handle} company={c} />)
-
-    if (companies === null) return (<p>Loading...</p>);
-    else if (error) return (<p> {error} </p>);
-    else return (<div> {companies.map((c) => <CompanyCard key={c.handle} company={c} />)} </div>)
+    if (isLoading) return (<p>Loading...</p>);
+    if (error) return (<p> {error} </p>);
+    return (<div> {companies.map((c) => <CompanyCard key={c.handle} company={c} />)} </div>)
   }
 
   return (

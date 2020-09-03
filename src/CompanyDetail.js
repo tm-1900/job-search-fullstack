@@ -10,7 +10,7 @@ import JobCardList from "./JobCardList";
  *            like {handle, name, description, numEmployees, logoURL, jobs}
  *           - company state received from JoblyApi.getCompany()
  * - error
- * 
+ * - isLoading - default True
  * Routes --> CompanyDetail --> JobCardList
  */
 
@@ -18,12 +18,9 @@ function CompanyDetail() {
   // useParams to grab handle to search for jobs within this company
   const { handle } = useParams()
 
-  //Todo. what's the diff between null and {}
   const [company, setCompany] = useState(null);
   const [error, setError] = useState(null);
-  //todo. can we use this instead of checking if company is null?
   const [isLoading, setIsLoading] = useState(true);
-
 
   /**Fetch companies from API based on search inputs 
   */
@@ -34,6 +31,9 @@ function CompanyDetail() {
         setCompany(result);
       } catch (err) {
         setError(err.message)
+      } finally {
+        setIsLoading(false);
+
       }
     }
     fetchCompany();
@@ -45,9 +45,9 @@ function CompanyDetail() {
   function showLoadingOrCompany() {
     //const companyJobCardList = ()
 
-    if (company === null) return <p>Loading...</p>
-    else if (error) return <p> Error! {error}</p>
-    else return (<div>
+    if (isLoading) return <p>Loading...</p>
+    if (error) return <p> Error! {error}</p>
+    return (<div>
       <h4>{company.name}</h4>
       <p>{company.description}</p>
       <JobCardList jobs={company.jobs} />

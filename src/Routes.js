@@ -24,22 +24,22 @@ import Navbar from './Navbar'
  *  JobList, LoginForm, SignupForm, ProfileForm }
  * 
  */
-function Routes() {
+function Routes({loggedInUser, logoutUser, signupUser}) {
   const [user, setUser] = useState({}); // when user logs in, fill in details
-  const [companies, setCompanies] = useState(null);
-  const [jobs, setJobs] = useState(null);
-
+  const [companies, setCompanies] = useState([{}]);
+  const [jobs, setJobs] = useState([{}]);
 
 
   /**Fetch companiesList */
   useEffect(function initialFetchCompanies() {
     async function fetchCompanies() {
-      const result = await JoblyApi.getCompaniesWithFilter()
+      const result = await JoblyApi.getCompanies()
       setCompanies(result);
     }
     fetchCompanies()
   }, [])
 
+  
 
   /**
    * Get data from ProfileForm, make api request to update user info.

@@ -20,6 +20,7 @@ import JobCardList from "./JobCardList";
  * State:
  *  - searchJobInput
  *  - error
+ *  - isLoading - default True
  * 
  * Routes --> JobList --> {SearchForm, JobCardList}
  */
@@ -29,7 +30,6 @@ function JobList({ jobs, setJobs }) {
 
   const [searchJobInput, setSearchJobInput] = useState({});
   const [error, setError] = useState(null);
-  //todo. can we use this instead of checking if company is null?
   const [isLoading, setIsLoading] = useState(true);
 
 
@@ -47,9 +47,9 @@ function JobList({ jobs, setJobs }) {
    */
   useEffect(function fetchSearchedJobs() {
     async function fetchJobs() {
-      let result;
+      
       try {
-        result = await JoblyApi.getJobsWithFilter(searchJobInput)
+        const result = await JoblyApi.getJobs(searchJobInput)
         //console.log("this is search input", searchJobInput)
         //console.log("this is result in fetchSearchedJobs", result)
 
@@ -60,6 +60,9 @@ function JobList({ jobs, setJobs }) {
         setJobs(result)
       } catch (err) {
         setError(err.message);
+      } finally{
+        setIsLoading(false);
+
       }
     }
     fetchJobs();
@@ -70,9 +73,9 @@ function JobList({ jobs, setJobs }) {
   /**Handles loading, errors, JobCardList and renders accordingly. */
   function showLoadingOrJobs() {
 
-    if (jobs === null) return (<p>Loading...</p>)
-    else if (error) return (<p> {error} </p>)
-    else return ( <div> 
+    if (isLoading) return (<p>Loading...</p>)
+    if (error) return (<p> {error} </p>)
+    return ( <div> 
                         <JobCardList jobs={jobs}/> 
                   </div>)
     
