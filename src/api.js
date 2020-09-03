@@ -20,6 +20,7 @@ class JoblyApi {
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${JoblyApi.token}` };
+    //const headers = { Authorization: `Bearer ${JoblyApi.getToken(data)}` };
     const params = (method === "get")
       ? data
       : {};
@@ -83,17 +84,17 @@ class JoblyApi {
       title: data.searchTerm || undefined,
       minSalary: data.minSalary || undefined,
       hasEquity: data.hasEquity || undefined,
-    }    
-    
+    }
+
     const res = await this.request('jobs', searchJobParams)
-    
+
     // console.log("this is res in getJobs", res.jobs)
 
     return res.jobs
   }
 
   /** Get user token from login form */
-  static async getToken(data){
+  static async getToken(data) {
     console.log("this is data in getToken", data)
 
     const res = await this.request("auth/token", data, "post")
@@ -101,7 +102,36 @@ class JoblyApi {
     return res.token
   }
 
-  /**TODO. Add function to update user  */
+
+  /**Get user details.  */
+  static async getUser(username) {
+    console.log("this is data in getUser", username)
+
+    const user = {
+      username: username
+    }
+
+    //axios.get("/route", {params: {_token: token}})
+    const res = await this.request(`users/${username}`, user)
+
+    return res.user;
+  }
+
+  /**Register and create user. */
+  static async registerUser(data) {
+    const newUser = {
+      username: data.username,
+      password: data.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+    };
+
+    const userCreated = await this.request("auth/register", newUser, "post")
+
+    return userCreated.token
+
+  }
 
 }
 
