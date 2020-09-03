@@ -17,6 +17,8 @@ import Navbar from './Navbar'
  * - user: object of user details like {username, firstName, lastName, email}
  * - companies: default array of company objects 
  *      like [{handle, name, description, numEmployees, logoUrl},...]
+ * - jobs: default array of job objects
+ *      like [{id, title, salary, equity}...]
  * 
  * App -> Routes -> { Homepage, CompanyList, CompanyDetail,
  *  JobList, LoginForm, SignupForm, ProfileForm }
@@ -25,29 +27,18 @@ import Navbar from './Navbar'
 function Routes() {
   const [user, setUser] = useState({}); // when user logs in, fill in details
   const [companies, setCompanies] = useState(null);
-  const [searchCompany, setSearchCompany] = useState({});
-  // const [jobs, setJobs] = useState(JoblyApi.getJobsWithFilter);
-  // const [jobs, setJobs] = useState([{}]);
+  const [jobs, setJobs] = useState(null);
 
+
+
+  /**Fetch companiesList */
   useEffect(function initialFetchCompanies() {
     async function fetchCompanies() {
       const result = await JoblyApi.getCompaniesWithFilter()
-      setCompanies(result)
+      setCompanies(result);
     }
     fetchCompanies()
   }, [])
-
-
-  useEffect(function fetchSearchedCompanies() {
-    async function fetchCompanies() {
-      // console.log("fetchCompanies ran")
-      const result = await JoblyApi.getCompaniesWithFilter(searchCompany)
-      // console.log("this is result in fetchSearchedCompanies", result)
-      setCompanies(result)
-    }
-    fetchCompanies();
-  }, [searchCompany])
-
 
   /** Gets data from LoginForm, makes an api request for that user,
    * if valid, setUser with api response. */
@@ -58,21 +49,6 @@ function Routes() {
   /** Reset user state be empty object. */
   function logoutUser(){}
 
-
-  /** Gets data from SearchForm on CompanyList page, 
-   *  makes an api request based on search input,
-   *  setSearchCompany with api response. */
-  function searchCompanies(formData) {
-    // console.log("searchCompanies ran")
-    setSearchCompany(formData);
-  }
-
-  /** Gets data from SearchForm on JobList page, 
-   *  makes an api request based on search input,
-   *  setJobs with api response. */
-  function searchJobs() {
-
-  }
 
   /** 
    * Get data from SignupFrom, makes an api request to add user
@@ -96,26 +72,28 @@ function Routes() {
     <BrowserRouter>
       <Navbar userInfo={user} logoutUser={logoutUser} />
       <Switch>
+
         <Route exact path="/">
           <Homepage first_name={user.first_name} />
         </Route>
         <Route exact path="/companies">
-          <CompanyList searchCompanies={searchCompanies} companies={companies} />
+          <CompanyList companies={companies} setCompanies={setCompanies}/>
         </Route>
         <Route exact path="/companies/:handle">
           <CompanyDetail />
         </Route>
         <Route exact path="/jobs">
-          {/* <JobList searchJobs={searchJobs} jobs={jobs} /> */}
+          <JobList jobs={jobs} setJobs={setJobs} />
         </Route>
+        <Route exact path="/profile">
+          <ProfileForm updateUser={updateUser} userInfo={user}/>
+        </Route>
+
         <Route exact path="/login">
           <LoginForm loggedInUser={loggedInUser} />
         </Route>
         <Route exact path="/signup">
-          <SignupForm signupUser={signupUser}/>
-        </Route>
-        <Route exact path="/profile">
-          <ProfileForm updateUser={updateUser} userInfo={user}/>
+          <SignupForm signupUser={signupUser} />
         </Route>
         <Redirect to="/" />
       </Switch>
