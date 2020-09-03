@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 
 /** CompanyCard
  * 
@@ -11,7 +12,9 @@ function CompanyCard({ company }) {
 
   return (
     <div className="CompanyCard">
-      <b>{company.name}</b>
+      <Link to={`/companies/${company.handle}`} >
+        {company.name} </Link>
+      
       <p>{company.description}</p>
       <img src={company.logoUrl} alt={company.name} />
     </div>
