@@ -26,7 +26,7 @@ import SearchForm from './SearchForm'
  */
 
 function CompanyList({ companies, setCompanies }) {
-  // console.log("this is companies", companies)
+  console.log("this is companies", companies)
 
   const [searchCompanyInput, setSearchCompanyInput] = useState({});
   const [error, setError] = useState(null);
@@ -41,9 +41,9 @@ function CompanyList({ companies, setCompanies }) {
   useEffect(function fetchSearchedCompanies() {
     async function fetchCompanies() {
       // console.log("fetchCompanies ran")
-      let result;
+
       try {
-        result = await JoblyApi.getCompanies(searchCompanyInput)
+        const result = await JoblyApi.getCompanies(searchCompanyInput)
 
         if (result.length === 0) {
           throw new Error("Sorry, no results were found!")
@@ -54,7 +54,6 @@ function CompanyList({ companies, setCompanies }) {
         setError(err.message);
       } finally {
         setIsLoading(false)
-
       }
     }
     fetchCompanies();
@@ -64,7 +63,6 @@ function CompanyList({ companies, setCompanies }) {
   /** Get formData from SearchForm on CompanyList page. 
    */
   function searchCompanies(formData) {
-
     setSearchCompanyInput(formData);
   }
 
@@ -78,6 +76,7 @@ function CompanyList({ companies, setCompanies }) {
 
   return (
     <div>
+      testhing companie list
       <SearchForm submitSearch={searchCompanies} />
       {showLoadingOrCompanies()}
     </div>
@@ -85,6 +84,7 @@ function CompanyList({ companies, setCompanies }) {
 }
 
 export default CompanyList;
+
 
 // console.log("searchCompanies ran")
 // console.log("this is result in fetchSearchedCompanies", result)

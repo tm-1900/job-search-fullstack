@@ -29,10 +29,10 @@ function LoginForm({ login }) {
     }));
   }
 
-  //Must show Alert message to validate form input
+  /** Handle form inputs to send to parent component,
+   * redirect to /companies 
+   * */
   async function handleSubmit(evt) {
-    // handle form input to send to parent
-    // redirect to /companies using history
     evt.preventDefault();
     try {
       await login(formData);

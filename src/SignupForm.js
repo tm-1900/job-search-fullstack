@@ -12,17 +12,21 @@ import { useHistory } from "react-router-dom";
  * App --> Routes --> SignupForm
  */
 
-function SignupForm({ signUp}) {
-  const inititialSate = {username:"", password:"",
-                        firstName:"", lastName:"",
-                        email:""};
-  
+function SignupForm({ signUp }) {
+  const inititialSate = {
+    username: "",
+    password: "",
+    firstName: "",
+    lastName: "",
+    email: ""
+  };
+
   const [formData, setFormData] = useState(inititialSate);
   const [errors, setErrors] = useState(null);
 
   const history = useHistory();
 
-  
+
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData(fData => ({
@@ -33,26 +37,18 @@ function SignupForm({ signUp}) {
 
 
   async function handleSubmit(evt) {
-    // handle form input to send to parent
-    // redirect to /companies using history
     evt.preventDefault();
-    // setErrors(null);
 
-    try{
-      //need await here bc if if don't have then it will immediately 
-      // run history.push() immediately
-      // await to stop and resolve the promise and if there's a errors then 
-      //go to catch 
+    try {
       await signUp(formData);
-
       history.push("/companies");
-    } catch(err){
+    } catch (err) {
       setErrors(err)
     }
   }
 
 
-  function showerrors(){
+  function showerrors() {
     if (errors) return (<p> {errors} </p>);
     //console.log("this is errors in showerrors", errors)
   }

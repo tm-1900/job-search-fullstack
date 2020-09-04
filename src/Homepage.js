@@ -8,9 +8,9 @@ import React from 'react';
 
 function Homepage(){
 
-  // function for checking if firstName is not undefined
-  // if it is undefined, return login & signup buttons
-  // else return "welcome back"
+  /**Check if firstName undefined, 
+   *  if yes, return login & signup buttons
+   *  else return "welcome back" */
   function showButtonsOrWelcomeBackMsg() {
 
   }

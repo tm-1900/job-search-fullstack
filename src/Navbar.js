@@ -1,5 +1,5 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, Link } from "react-router-dom";
 import UserContext from './UserContext';
 import { useHistory } from "react-router-dom";
 
@@ -14,7 +14,7 @@ import { useHistory } from "react-router-dom";
  */
 
 function Navbar({ logoutUser }) {
-  // console.log('does nav bar run')
+  // console.log('does Navbar run')
 
   const currentUser = useContext(UserContext);
   const username = currentUser?.username;
@@ -28,14 +28,13 @@ function Navbar({ logoutUser }) {
   }
 
 
-  // NavLink to="#"
   const loggedIn = (
     <nav>
       <NavLink to="/"> Jobly </NavLink>
       <NavLink to="/companies"> Companies </NavLink>
       <NavLink to="/jobs"> Jobs </NavLink>
       <NavLink to="/profile"> Profile </NavLink>
-      <button onClick={handleClick}> Logout {username} (just pretend it looks like a link)</button>
+      <Link onClick={handleClick}> Logout {username} </Link>
     </nav>
   )
 

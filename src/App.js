@@ -17,13 +17,12 @@ import jwt from "jsonwebtoken"
  * 
  */
 function App() {
-  //add token as state
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserToken, setCurrentUserToken] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState(null);
 
-  // console.log('this is current user App', currentUser)
+  //console.log('this is current user App', currentUser)
   //console.log('this is token', currentUserToken)
 
 
@@ -41,12 +40,12 @@ function App() {
           // make an api request for the user info using the username
           const userDetail = await JoblyApi.getUser(user.username)
           console.log("this is userDetail", userDetail)
-    
+
           // setCurrentUser to response of api
           setCurrentUser(userDetail);
         }
-  
-      } catch(err) {
+
+      } catch (err) {
         setError(err);
         console.log("this is err in getUserFromToken", err)
       } finally {
@@ -65,30 +64,26 @@ function App() {
 
   async function login(formData) {
     const token = await JoblyApi.getToken(formData);
-    // const userDetail = await JoblyApi.getUser(formData.username);
-    
-    // TODO why does this order matter?
+
     localStorage.setItem('user', token);
     setCurrentUserToken(token);
     // console.log('this is userDetail', userDetail)
   }
 
-  async function signUp(formData){
+  async function signUp(formData) {
     const newUserToken = await JoblyApi.registerUser(formData);
 
     localStorage.setItem('user', newUserToken);
     setCurrentUserToken(newUserToken);
   }
 
-  // to remember a logged in user, we need a useEffect to get the user via the API using the token
-  // 
 
   function showLoadingOrNavbar() {
     if (isLoading) return (<p>Loading...</p>);
     if (error) return (<p> {error} </p>);
   }
 
-  
+
   return (
     <div className="App">
       {/* <nav class="Navigation navbar navbar-expand-md"> */}
@@ -97,7 +92,7 @@ function App() {
         <UserContext.Provider value={currentUser}>
           <Navbar logoutUser={logoutUser} />
           <Routes signUp={signUp}
-                  login={login}
+            login={login}
           />
         </UserContext.Provider>
       </BrowserRouter>

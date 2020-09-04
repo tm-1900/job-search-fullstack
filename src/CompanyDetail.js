@@ -15,12 +15,12 @@ import JobCardList from "./JobCardList";
  */
 
 function CompanyDetail() {
-  // useParams to grab handle to search for jobs within this company
   const { handle } = useParams()
 
   const [company, setCompany] = useState(null);
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+
 
   /**Fetch companies from API based on search inputs 
   */
@@ -33,20 +33,18 @@ function CompanyDetail() {
         setError(err.message)
       } finally {
         setIsLoading(false);
-
       }
     }
     fetchCompany();
   }, [handle, setCompany]);
 
 
-  /** Handles loading, errors, and JobCardList, and renders accordingly. 
-  */
+  /** Handles loading, errors, and JobCardList, and renders accordingly. */
   function showLoadingOrCompany() {
-    //const companyJobCardList = ()
 
     if (isLoading) return <p>Loading...</p>
     if (error) return <p> Error! {error}</p>
+
     return (<div>
       <h4>{company.name}</h4>
       <p>{company.description}</p>
@@ -54,7 +52,6 @@ function CompanyDetail() {
     </div>)
   }
 
-  // pass company.jobs to JobCardList as props
   return (
     <div>
       {showLoadingOrCompany()}

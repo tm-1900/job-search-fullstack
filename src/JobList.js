@@ -37,8 +37,8 @@ function JobList({ jobs, setJobs }) {
   function searchJobs(formData) {
     // console.log("searchJobs ran")
     setSearchJobInput(formData);
-
   }
+
 
   /**
    * Makes an api request based on search input, 
@@ -49,19 +49,17 @@ function JobList({ jobs, setJobs }) {
       
       try {
         const result = await JoblyApi.getJobs(searchJobInput)
-        //console.log("this is search input", searchJobInput)
+        //console.log("this is searchJobInput", searchJobInput)
         //console.log("this is result in fetchSearchedJobs", result)
 
         if (result.length === 0) {
           throw new Error("Sorry, no results were found!")
         }
-
         setJobs(result)
       } catch (err) {
         setError(err.message);
       } finally{
         setIsLoading(false);
-
       }
     }
     fetchJobs();
@@ -80,8 +78,6 @@ function JobList({ jobs, setJobs }) {
     
   }
 
-  // renders JobCard based on jobs inputs
-  //submitSearch passed a a prop from SearchForm, feeding it searchJobs function
   return (
     <div>
       <SearchForm submitSearch={searchJobs} />
