@@ -4,45 +4,24 @@ import { useHistory } from "react-router-dom";
 
 /**
  * Prop:
- *  - setCurrentUser
-*   - setCurrentUserToken
+ *  - signUp
  * 
  * State:
  *  -formData
  * App --> Routes --> SignupForm
  */
 
-function SignupForm({ setCurrentUserToken, setCurrentUser}) {
+function SignupForm({ signUp}) {
   const inititialSate = {username:"", password:"",
-    firstName:"", lastName:"",
+                        firstName:"", lastName:"",
                         email:""};
   
-  const [formData, setFormData] = useState(inititialSate)
-  const [newUserInfo, setNewUserInfo] = useState({});
-  const [isLoading, setIsLoading] = useState(true);
+  const [formData, setFormData] = useState(inititialSate);
   const [error, setError] = useState(null);
-  const [submit, setSubmit] = useState(false);
 
   const history = useHistory();
 
-  useEffect(function createUser(){
-    async function addUserToDb(){
-      try{
-        const newUserToken = await JoblyApi.registerUser(newUserInfo);
-        
-        setCurrentUserToken(newUserToken);
-        setCurrentUser(newUserInfo)
-        history.push("/companies");
-      }catch(err){
-        setError(err)
-      }finally{
-        setIsLoading(false);
-      }
-    }
-    addUserToDb();
-  }, [newUserInfo, setCurrentUser, setCurrentUserToken])
   
-
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData(fData => ({
@@ -51,29 +30,30 @@ function SignupForm({ setCurrentUserToken, setCurrentUser}) {
     }));
   }
 
-  //todo. why does error render so many times
-  function handleSubmit(evt) {
+
+  async function handleSubmit(evt) {
     // handle form input to send to parent
     // redirect to /companies using history
     evt.preventDefault();
     // setError(null);
 
-    setNewUserInfo(formData);
-    setFormData(inititialSate);
-    setSubmit(true);
+    try{
+      //need await here bc if if don't have then it will immediately 
+      // run history.push() immediately
+      // await to stop and resolve the promise and if there's a error then 
+      //go to catch 
+      await signUp(formData);
 
+      history.push("/companies");
+    } catch(err){
+      setError(err)
+    }
   }
 
-  /** 
- * Get data from SignupFrom, makes an api request to add user
- * into db.
- */
-  //function signupUser() { }
 
-  function showLoadingOrError(){
-    if (isLoading) return (<p>Loading...</p>);
-    if (error && submit) return (<p> {error} </p>);
-    //console.log("this is error in showLoadingOrError", error)
+  function showError(){
+    if (error) return (<p> {error} </p>);
+    //console.log("this is error in showError", error)
   }
 
   return (
@@ -120,7 +100,7 @@ function SignupForm({ setCurrentUserToken, setCurrentUser}) {
         />
         <button>Submit</button>
       </form>
-      {showLoadingOrError()}
+      {showError()}
     </>
   )
 }

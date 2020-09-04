@@ -18,7 +18,7 @@ function Homepage({ first_name }){
 
   }
 
-  return (<p>This is homepage</p>)
+  return (<p></p>)
 }
 
 export default Homepage;

@@ -1,6 +1,8 @@
-import React from "react";
+import React, { useContext } from "react";
 import { NavLink } from "react-router-dom";
-import Homepage from "./Homepage";
+import UserContext from './UserContext';
+import { useHistory } from "react-router-dom";
+
 
 /**
  * Render Navbar. 
@@ -12,10 +14,19 @@ import Homepage from "./Homepage";
  * App --> Navbar
  */
 
-function Navbar({ userInfo, logoutUser }) {
+function Navbar({ logoutUser }) {
   console.log('does nav bar run')
-  //if logged in: create NavLink for Jobly(homepage), Companies, 
-  //Jobs, Profile, Signout (logout tram)
+
+  const {currentUser} = useContext(UserContext);
+  console.log('currentUser Navbar', currentUser)
+
+  const history = useHistory();
+  
+  function handleClick(evt){
+    logoutUser();
+    history.push("/");
+  }
+
 
   const loggedIn = (
     <nav>
@@ -23,14 +34,10 @@ function Navbar({ userInfo, logoutUser }) {
       <NavLink to="/companies"> Companies </NavLink>
       <NavLink to="/jobs"> Jobs </NavLink>
       <NavLink to="/profile"> Profile </NavLink>
-      <NavLink to="/signout"> Signout</NavLink>
-      {/* <NavLink to={`/logout ${userInfo.first_name}`}> */}
-      {/* //onclick to logoutUser */}
-      {/* </NavLink> */}
+      <button onClick={handleClick}> Logout {currentUser} </button>
     </nav>
   )
 
-  //if not logged in: Jobly(homepage), Login SignUp { && }
   const notLoggedIn = (
     <nav>
       <NavLink to="/"> Homepage </NavLink>
@@ -39,10 +46,10 @@ function Navbar({ userInfo, logoutUser }) {
     </nav>
   )
 
-
   return (
     <nav>
-      {loggedIn}
+      {(currentUser !== undefined) && loggedIn}
+      {(currentUser === undefined) && notLoggedIn}
 
     </nav>
   )

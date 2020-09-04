@@ -4,9 +4,7 @@ import {useHistory} from "react-router-dom"
 
 /**
  * Props:
- * - loggedInUser: login function received from parent 
- * - setCurrentUser
- * - setCurrentUserToken
+ * - login
  * 
  * State:
  *  - formData
@@ -21,9 +19,6 @@ function LoginForm({ login }) {
 
   const history = useHistory();
 
-
-  //Must show Alert message to validate form input
-
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData(fData => ({
@@ -32,6 +27,7 @@ function LoginForm({ login }) {
     }));
   }
 
+  //Must show Alert message to validate form input
   async function handleSubmit(evt) {
     // handle form input to send to parent
     // redirect to /companies using history

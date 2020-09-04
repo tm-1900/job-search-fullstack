@@ -8,7 +8,7 @@ import LoginForm from './LoginForm'
 import SignupForm from './SignupForm'
 import ProfileForm from './ProfileForm'
 import JoblyApi from './api'
-import Navbar from './Navbar'
+
 
 
 /** Routes
@@ -24,7 +24,7 @@ import Navbar from './Navbar'
  *  JobList, LoginForm, SignupForm, ProfileForm }
  * 
  */
-function Routes({ login, logoutUser, signupUser}) {
+function Routes({ login, logoutUser, signUp}) {
   const [user, setUser] = useState({}); // when user logs in, fill in details
   const [companies, setCompanies] = useState([{}]);
   const [jobs, setJobs] = useState([{}]);
@@ -53,9 +53,7 @@ function Routes({ login, logoutUser, signupUser}) {
 
   return (
     <>
-      <Navbar userInfo={user} logoutUser={logoutUser} />
       <Switch>
-
         <Route exact path="/">
           <Homepage first_name={user.first_name} />
         </Route>
@@ -76,8 +74,10 @@ function Routes({ login, logoutUser, signupUser}) {
           <LoginForm login={login} />
         </Route>
         <Route exact path="/signup">
-          <SignupForm />
+          <SignupForm signUp={signUp} />
         </Route>
+
+
         <Redirect to="/" />
       </Switch>
     </>
