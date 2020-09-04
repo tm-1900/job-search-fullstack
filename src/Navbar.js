@@ -8,17 +8,17 @@ import { useHistory } from "react-router-dom";
  * Render Navbar. 
  * 
  * Prop: 
- *  - userInfo: user info object like { first_name, last_name, email }
- *  - logoutUser function received from parent
+ *  - logoutUser: function received from parent
  * 
  * App --> Navbar
  */
 
 function Navbar({ logoutUser }) {
-  console.log('does nav bar run')
+  // console.log('does nav bar run')
 
-  const {currentUser} = useContext(UserContext);
-  console.log('currentUser Navbar', currentUser)
+  const currentUser = useContext(UserContext);
+  const username = currentUser?.username;
+  // console.log('currentUser Navbar', currentUser)
 
   const history = useHistory();
   
@@ -28,13 +28,14 @@ function Navbar({ logoutUser }) {
   }
 
 
+  // NavLink to="#"
   const loggedIn = (
     <nav>
       <NavLink to="/"> Jobly </NavLink>
       <NavLink to="/companies"> Companies </NavLink>
       <NavLink to="/jobs"> Jobs </NavLink>
       <NavLink to="/profile"> Profile </NavLink>
-      <button onClick={handleClick}> Logout {currentUser} </button>
+      <button onClick={handleClick}> Logout {username} (just pretend it looks like a link)</button>
     </nav>
   )
 
@@ -48,9 +49,8 @@ function Navbar({ logoutUser }) {
 
   return (
     <nav>
-      {(currentUser !== undefined) && loggedIn}
-      {(currentUser === undefined) && notLoggedIn}
-
+      {(username !== undefined) && loggedIn}
+      {(username === undefined) && notLoggedIn}
     </nav>
   )
 }

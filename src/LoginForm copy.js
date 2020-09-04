@@ -36,7 +36,7 @@ function LoginForm({ setCurrentUserToken, setCurrentUser }) {
   useEffect(function fetchUserToken() {
     async function fetchUser() {
       try {
-        const result = await JoblyApi.getToken(userLoginInfo);
+        const result = await JoblyApi.getToken(userLoginInfo); // formData instead of userLoginInfo
         const userDetail = await JoblyApi.getUser(userLoginInfo.username);
 
         setCurrentUserToken(result)

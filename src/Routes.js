@@ -14,7 +14,6 @@ import JoblyApi from './api'
 /** Routes
  * 
  * State:
- * - user: object of user details like {username, firstName, lastName, email}
  * - companies: default array of company objects 
  *      like [{handle, name, description, numEmployees, logoUrl},...]
  * - jobs: default array of job objects
@@ -25,7 +24,6 @@ import JoblyApi from './api'
  * 
  */
 function Routes({ login, logoutUser, signUp}) {
-  const [user, setUser] = useState({}); // when user logs in, fill in details
   const [companies, setCompanies] = useState([{}]);
   const [jobs, setJobs] = useState([{}]);
 
@@ -55,7 +53,7 @@ function Routes({ login, logoutUser, signUp}) {
     <>
       <Switch>
         <Route exact path="/">
-          <Homepage first_name={user.first_name} />
+          <Homepage />
         </Route>
         <Route exact path="/companies">
           <CompanyList companies={companies} setCompanies={setCompanies}/>
@@ -67,7 +65,7 @@ function Routes({ login, logoutUser, signUp}) {
           <JobList jobs={jobs} setJobs={setJobs} />
         </Route>
         <Route exact path="/profile">
-          <ProfileForm updateUser={updateUser} userInfo={user}/>
+          <ProfileForm updateUser={updateUser} />
         </Route>
 
         <Route exact path="/login">

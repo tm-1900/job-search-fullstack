@@ -101,6 +101,11 @@ const fakeCompany = {
     ]
   }
 
+
+
+  //axios.get("/route", {params: {_token: token}})
+
+
 */
 
 

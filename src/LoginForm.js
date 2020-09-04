@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
-import JoblyApi from './api';
+import React, { useState } from "react";
 import {useHistory} from "react-router-dom"
+
 
 /**
  * Props:
@@ -8,6 +8,7 @@ import {useHistory} from "react-router-dom"
  * 
  * State:
  *  - formData
+ *  - error
  * 
  * App --> Routes --> LoginForm
  */
@@ -18,6 +19,7 @@ function LoginForm({ login }) {
   const [error, setError] = useState(null);
 
   const history = useHistory();
+
 
   function handleChange(evt) {
     const { name, value } = evt.target;
@@ -41,8 +43,8 @@ function LoginForm({ login }) {
   }
 
   function showError() {
-    if (error) return (<p> {error} </p>);
     //console.log("this is error in showError", error)
+    if (error) return (<p> {error} </p>);
   }
 
 

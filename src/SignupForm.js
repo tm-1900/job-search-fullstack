@@ -1,13 +1,14 @@
-import React, { useState, useEffect } from "react";
-import JoblyApi from "./api";
+import React, { useState } from "react";
 import { useHistory } from "react-router-dom";
 
 /**
  * Prop:
- *  - signUp
+ *  - signUp: function from App to handle sign up
  * 
  * State:
- *  -formData
+ * - formData
+ * - errors
+ * 
  * App --> Routes --> SignupForm
  */
 
@@ -17,7 +18,7 @@ function SignupForm({ signUp}) {
                         email:""};
   
   const [formData, setFormData] = useState(inititialSate);
-  const [error, setError] = useState(null);
+  const [errors, setErrors] = useState(null);
 
   const history = useHistory();
 
@@ -35,25 +36,25 @@ function SignupForm({ signUp}) {
     // handle form input to send to parent
     // redirect to /companies using history
     evt.preventDefault();
-    // setError(null);
+    // setErrors(null);
 
     try{
       //need await here bc if if don't have then it will immediately 
       // run history.push() immediately
-      // await to stop and resolve the promise and if there's a error then 
+      // await to stop and resolve the promise and if there's a errors then 
       //go to catch 
       await signUp(formData);
 
       history.push("/companies");
     } catch(err){
-      setError(err)
+      setErrors(err)
     }
   }
 
 
-  function showError(){
-    if (error) return (<p> {error} </p>);
-    //console.log("this is error in showError", error)
+  function showerrors(){
+    if (errors) return (<p> {errors} </p>);
+    //console.log("this is errors in showerrors", errors)
   }
 
   return (
@@ -100,7 +101,7 @@ function SignupForm({ signUp}) {
         />
         <button>Submit</button>
       </form>
-      {showError()}
+      {showerrors()}
     </>
   )
 }

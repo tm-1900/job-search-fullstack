@@ -108,10 +108,9 @@ class JoblyApi {
     console.log("this is data in getUser", username)
 
     const user = {
-      username: username
+      username
     }
 
-    //axios.get("/route", {params: {_token: token}})
     const res = await this.request(`users/${username}`, user)
 
     return res.user;
@@ -135,9 +134,11 @@ class JoblyApi {
 
 }
 
+// every time your token changes in App useEffect set JoblyApi.token to 
+// be currentUserToken
 // for now, put token ("testuser" / "password" on class)
-JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
-  "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
-  "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
+// JoblyApi.token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZ" +
+//   "SI6InRlc3R1c2VyIiwiaXNBZG1pbiI6ZmFsc2UsImlhdCI6MTU5ODE1OTI1OX0." +
+//   "FtrMwBQwe6Ue-glIFgz_Nf8XxRT2YecFCiSpYL0fCXc";
 
 export default JoblyApi;
