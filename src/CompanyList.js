@@ -76,7 +76,6 @@ function CompanyList({ companies, setCompanies }) {
 
   return (
     <div>
-      testhing companie list
       <SearchForm submitSearch={searchCompanies} />
       {showLoadingOrCompanies()}
     </div>
