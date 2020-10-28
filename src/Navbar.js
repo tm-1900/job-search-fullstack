@@ -17,7 +17,7 @@ function Navbar({ logoutUser }) {
   // console.log('does Navbar run')
 
   const currentUser = useContext(UserContext);
-  const username = currentUser?.username;
+  const username = currentUser ? username : 
   // console.log('currentUser Navbar', currentUser)
 
   const history = useHistory();
