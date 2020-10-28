@@ -19,7 +19,6 @@ function SearchForm({ submitSearch }) {
 
 
   /** handle form inputs */ 
-  //if it's one input don't need setformData()
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData(fData => ({
@@ -35,7 +34,7 @@ function SearchForm({ submitSearch }) {
     setFormData(initialState);
   }
 
-  //other options: aria/label twitter bootstrap
+
   return (
     <div className="SearchForm mb-4">
       <form onSubmit={handleSubmit}>

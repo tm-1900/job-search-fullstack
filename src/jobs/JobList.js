@@ -40,6 +40,7 @@ function JobList({ jobs, setJobs }) {
     setSearchJobInput(formData);
   }
 
+
   /**
    * Makes an api request based on search input, 
    *  setJobs with api response.
@@ -57,7 +58,6 @@ function JobList({ jobs, setJobs }) {
         setError(err.message);
       } finally{
         setIsLoading(false);
-
       }
     }
     fetchJobs();
@@ -76,8 +76,6 @@ function JobList({ jobs, setJobs }) {
     
   }
 
-  // renders JobCard based on jobs inputs
-  //submitSearch passed a a prop from SearchForm, feeding it searchJobs function
   return (
     <div>
       <SearchForm submitSearch={searchJobs} />

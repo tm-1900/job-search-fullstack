@@ -37,16 +37,12 @@ function Routes({ login, logoutUser, signUp}) {
     fetchCompanies()
   }, [])
 
-  
 
   /**
    * Get data from ProfileForm, make api request to update user info.
    * SetUser with new info.
    */
-
-   function updateUser(){
-
-   }
+   function updateUser(){}
 
 
   return (

@@ -15,7 +15,6 @@ import JobCardList from "../jobs/JobCardList";
  */
 
 function CompanyDetail() {
-  // useParams to grab handle to search for jobs within this company
   const { handle } = useParams()
   console.debug("CompanyDetail", "handle=", handle);
 
@@ -50,7 +49,6 @@ function CompanyDetail() {
   );
 
 
-  // pass company.jobs to JobCardList as props
   return (
     <div className="CompanyDetail col-md-8 offset-md-2">
       {error ? <p> {error}</p> : showLoadingOrCompany}
