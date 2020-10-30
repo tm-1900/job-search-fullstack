@@ -61,7 +61,7 @@ function App() {
           // setCurrentUser based on response of api
           setCurrentUser(currentUser);
         } catch (err) {
-          setError(err)
+          //setError(err)
           setCurrentUser(null)
         } 
       }
