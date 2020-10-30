@@ -18,7 +18,8 @@ import SearchForm from '../common/SearchForm';
  *              like [{handle, name, description, numEmployees, logoUrl},...]
  * 
  * State: 
- *  - companies
+ * - companies: default array of company objects
+ *      like [{handle, name, description, numEmployees, logoUrl},...]
  *  - isLoading - default True
  * 
  * Routes --> CompanyList --> { SearchForm, CompanyCard }

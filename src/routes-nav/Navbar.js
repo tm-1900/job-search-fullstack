@@ -16,16 +16,9 @@ import "./Navbar.css";
  * App --> Navbar
  */
 
-function Navbar({ logoutUser }) {
+function Navbar({ logoutUser, editProfile }) {
   const { currentUser } = useContext(UserContext);
   console.debug("Navbar", "currentUser=", currentUser);
-
-  //const history = useHistory();
-
-  // function handleClick(evt) {
-  //   logoutUser();
-  //   history.push("/");
-  // }
 
 
   function loggedInNavDisplay() {
@@ -45,7 +38,7 @@ function Navbar({ logoutUser }) {
         </li>
         <li className="nav-item mr-4">
           <Link className="nav-link" to="/" onClick={logoutUser}>
-            Logout {currentUser}
+            Logout {currentUser.username}
           </Link>
         </li>
       </ul>

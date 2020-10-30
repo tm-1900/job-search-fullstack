@@ -15,7 +15,7 @@ import UserContext from "../auth/UserContext";
 
  function PrivateRoute({exact, path, children}){
    // get currentUser
-   const currentUser = useContext(UserContext);
+   const {currentUser} = useContext(UserContext);
 
    console.log(
      "PrivateRoute",
@@ -25,7 +25,7 @@ import UserContext from "../auth/UserContext";
    );
 
    //redirect if not current user
-   if (!currentUser.currentUser){
+   if (!currentUser){
      return <Redirect to="/login" />;
    }
 

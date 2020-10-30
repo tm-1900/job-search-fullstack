@@ -13,19 +13,13 @@ import PrivateRoute from "./PrivateRoute";
 
 /** Routes
  * 
- * State:
- * - companies: default array of company objects 
- *      like [{handle, name, description, numEmployees, logoUrl},...]
- * - jobs: default array of job objects
- *      like [{id, title, salary, equity}...]
- * 
  * App -> Routes -> { Homepage, CompanyList, CompanyDetail,
  *  JobList, LoginForm, SignupForm, ProfileForm }
  * 
  * <PrivateRoute> will show certain components depending on whether a user is 
  * logged in. These components will be wrapped in <PrivateRoutes> instead of <Routes>
  */
-function Routes({ login, signup }) {
+function Routes({ login, signup, editProfile }) {
   console.debug(
     "Routes",
     `login=${typeof login}`,
@@ -63,7 +57,7 @@ function Routes({ login, signup }) {
         </PrivateRoute>
 
         <PrivateRoute exact path="/profile">
-          <ProfileForm/>
+          <ProfileForm editProfile={editProfile}/>
         </PrivateRoute>
 
         <Redirect to="/" />

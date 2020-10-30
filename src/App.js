@@ -14,8 +14,9 @@ export const TOKEN_STORAGE_ID = "userToken";
 
 /**
  * State:
- * - currentUser - from API, used to tell if a user is logged in and is passed
- *  around through context throughout the app.
+ * - currentUser - a string, will be used connect with API to get token
+ *  - from API, used to tell if a user is logged in and is passed
+ *  - around through context throughout the app.
  * 
  * - currentUserToken - this is the token for logged in user, the user's 
  *  authentication JWT. It's required to be set for most API calls.
@@ -58,10 +59,10 @@ function App() {
           let currentUser = await JoblyApi.getUser(username);
 
           // setCurrentUser based on response of api
-          setCurrentUser(currentUser.username);
+          setCurrentUser(currentUser);
         } catch (err) {
+          setError(err)
           setCurrentUser(null)
-          throw new Error("This user doesn't exists", err)
         } 
       }
       setIsLoading(true);
@@ -88,6 +89,16 @@ function App() {
     setCurrentUserToken(newUserToken);
   }
 
+  /*edit user profile*/
+  async function editProfile(userDetail){
+    const user = await JoblyApi.updateUserProfile(userDetail);
+    console.debug("editProfile",
+      "loadUserInfoWithToken",
+      "currentUser=", currentUser,
+      "user=", user);
+    setCurrentUser(user);
+  }
+
   // show loading 
    if (!isLoading) return (<p>Loading...</p>);
 
@@ -97,7 +108,7 @@ function App() {
         <UserContext.Provider value={{currentUser, setCurrentUser}}>
           <Navbar logoutUser={logoutUser} />
           <Routes signup={signup}
-            login={login}/>
+            login={login} editProfile={editProfile}/>
         </UserContext.Provider>
       </BrowserRouter>
     </div>
