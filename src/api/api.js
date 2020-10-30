@@ -90,7 +90,7 @@ class JoblyApi {
   /** Handle login, get user token via form inputs: username, password */
   // old function name: getToken()
   static async login(data) {
-    console.log("this is Jobly.API login data", data)
+    //console.log("this is Jobly.API login data", data)
     const res = await this.request("auth/token", data, "post")
 
     console.debug("this is login data result should be token", res.token)
