@@ -16,7 +16,7 @@ class JoblyApi {
   static token;
 
   static async request(endpoint, data = {}, method = "get") {
-    console.debug("API Call:", endpoint, data, method);
+    console.debug("API Call:", "API endpoint:", endpoint, "API data:", data, "API method:", method);
 
     const url = `${BASE_URL}/${endpoint}`;
     const headers = { Authorization: `Bearer ${JoblyApi.token}` };
@@ -59,7 +59,7 @@ class JoblyApi {
     }
 
     const res = await this.request('companies', searchParams)
-    console.log("this is res in getCompanies", res.companies)
+    console.debug("api.js getCompanies", res.companies)
 
     return res.companies
   }
@@ -90,22 +90,22 @@ class JoblyApi {
   /** Handle login, get user token via form inputs: username, password */
   // old function name: getToken()
   static async login(data) {
-    console.log("this is data in getToken", data)
+    console.log("this is Jobly.API login data", data)
     const res = await this.request("auth/token", data, "post")
+
+    console.debug("this is login data result should be token", res.token)
 
     return res.token
   }
 
 
 
-  /**Get user details.  */
+  /**Get user details. Returns an object */
   static async getUser(username) {
-    //console.log("this is data in getUser", username)
+    console.debug("this is data in getUser", username)
 
-    //const user = {username}
-    // const res = await this.request(`users/${username}`, user)
     const res = await this.request(`users/${username}`)
-
+    console.debug("this is data getUser in res", res.user)
     return res.user;
   }
 
@@ -129,6 +129,11 @@ class JoblyApi {
   //   let res = await this.request("auth/register", userData, "post")
   //   return res.token
   // }
+
+  /* Apply to job */
+  static async applyToJobs(username, id){
+    await this.request(`users/${username}/jobs/${id}`, {}, "post");
+  }
 
 }
 

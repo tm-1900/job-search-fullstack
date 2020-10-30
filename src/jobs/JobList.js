@@ -3,14 +3,13 @@ import SearchForm from '../common/SearchForm';
 import JoblyApi from '../api/api';
 import JobCardList from "./JobCardList";
 
-//todo. change joblist to jobslist
 /**
  * Renders JobList.
  *    - by default, all jobs will be shown
  *    - If user types inputs into SearchBox, JobList will be filtered
  *          based on inputs
  *   
- * Props:
+ * 
  * - setJobs: received function from parent; will set new jobs list
  *      when user search for a particular job.
  * - jobs: array of job objects 
@@ -24,45 +23,39 @@ import JobCardList from "./JobCardList";
  * Routes --> JobList --> {SearchForm, JobCardList}
  */
 
-function JobList({ jobs, setJobs }) {
-  console.debug("JobList");
-
-  const [searchJobInput, setSearchJobInput] = useState({});
+function JobList() {
+  const [jobs, setJobs] = useState({});
   const [error, setError] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-
-
- 
-
-  /** Gets data from SearchForm on JobList page, 
-    */
-  function searchJobs(formData) {
-    setSearchJobInput(formData);
-  }
-
 
   /**
    * Makes an api request based on search input, 
    *  setJobs with api response.
    */
   useEffect(function fetchSearchedJobs() {
+    console.debug("JobList useEffect fetchSearchedJobs");
+
+    searchJobs();
+  }, [])
+
+  function searchJobs(formData) {
+    setIsLoading(true);
+
     async function fetchJobs() {
-      
       try {
-        const result = await JoblyApi.getJobs(searchJobInput)
+        const result = await JoblyApi.getJobs(formData)
         if (result.length === 0) {
           throw new Error("Sorry, no results were found!")
         }
         setJobs(result)
       } catch (err) {
         setError(err.message);
-      } finally{
+      } finally {
         setIsLoading(false);
       }
     }
     fetchJobs();
-
-  }, [setJobs, searchJobInput])
+  }
 
 
   /**Handles loading, errors, JobCardList and renders accordingly. */
@@ -70,10 +63,10 @@ function JobList({ jobs, setJobs }) {
 
     if (isLoading) return (<p>Loading...</p>)
     if (error) return (<p> {error} </p>)
-    return ( <div> 
-                        <JobCardList jobs={jobs}/> 
-                  </div>)
-    
+    return (<div>
+      <JobCardList jobs={jobs} />
+    </div>)
+
   }
 
   return (

@@ -18,75 +18,67 @@ import SearchForm from '../common/SearchForm';
  *              like [{handle, name, description, numEmployees, logoUrl},...]
  * 
  * State: 
- *  - searchCompanyInput
- *  - error
+ *  - companies
  *  - isLoading - default True
  * 
  * Routes --> CompanyList --> { SearchForm, CompanyCard }
  */
 
-function CompanyList({ companies, setCompanies }) {
-  console.log("this is companies", companies)
+function CompanyList() {
+  console.debug("this is CompanyList")
 
-  const [searchCompanyInput, setSearchCompanyInput] = useState({});
-  const [error, setError] = useState(null);
+  const [companies, setCompanies] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-
+  console.debug("CompanyList useEffect companies", companies);
 
   /** Makes an axios API request based on search input,
-   *  setSearchCompanyInput with api response. 
+   *  fetchSearchedCompanies with api response.
    *  Return companies based on search inputs.  
    * 
    * */
   useEffect(function fetchSearchedCompanies() {
-    console.debug("CompanyList useEffect getCompaniesOnMount");
+    console.debug("CompanyList useEffect fetchSearchedCompanies");
 
     searchCompanies();
   }, [])
 
-  useEffect(function fetchSearchedCompanies() {
-    async function fetchCompanies() {
-      try {
-        const result = await JoblyApi.getCompanies(searchCompanyInput)
+  function searchCompanies(formData){
+    setIsLoading(true);
 
-        if (result.length === 0) {
-          throw new Error("Sorry, no results were found!")
-        }
-        setCompanies(result)
-        setIsLoading(false)
-      } catch (err) {
-        setError(err.message);
-      } 
+    async function fetchCompanies(){
+      try{
+        const result = await JoblyApi.getCompanies(formData);
+        console.debug("CompanyList useEffect resultresultresultresult", result);
+        setCompanies(result);
+        setIsLoading(false);
+      }catch(error){
+        throw new Error("Sorry, no results were found!")
+      }
     }
     fetchCompanies();
-  }, [searchCompanyInput, setCompanies])
-
-
-  /** Get formData from SearchForm on CompanyList page. 
-   */
-  function searchCompanies(formData) {
-    setSearchCompanyInput(formData);
   }
 
-  /**Handles loading, errors, JobCardList and renders accordingly. */
-  function showLoadingOrCompanies() {
-    if (isLoading) return (<p>Loading...</p>);
-    if (error) return (<p> {error} </p>);
-    return (<div> {companies.map((c) => <CompanyCard 
-      key={c.handle} 
-      company={c}
-      name={c.name}
-      description={c.description}
-      logoUrl={c.logoUrl}
-      />)} </div>)
-  }
+  const loadCompanies = isLoading ? (<p>Loading...</p>) : (
+    <div className="CompanyList-list">
+      {companies.map(company => (
+        <CompanyCard
+          key={company.handle}
+          handle={company.handle}
+          name={company.name}
+          description={company.description}
+          logoUrl={company.logoUrl}
+        />
+      ))}
+    </div>
+  ) 
 
   return (
     <div className="CompanyList col-md-8 offset-md-2">
       <SearchForm submitSearch={searchCompanies} />
-      {showLoadingOrCompanies()}
+      {loadCompanies}
     </div>
-  )
+    )
 }
+
 
 export default CompanyList;

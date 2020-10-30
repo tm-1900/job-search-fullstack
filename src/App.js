@@ -3,10 +3,11 @@ import './App.css';
 import Routes from './routes-nav/Routes';
 import "bootstrap/dist/css/bootstrap.css";
 import UserContext from './auth/UserContext';
-import JoblyApi from "./api/api.js"
-import { BrowserRouter } from "react-router-dom"
-import Navbar from './routes-nav/Navbar'
-import jwt from "jsonwebtoken"
+import JoblyApi from "./api/api.js";
+import { BrowserRouter } from "react-router-dom";
+import Navbar from './routes-nav/Navbar';
+import jwt from "jsonwebtoken";
+import useLocalStorage from "./hooks/useLocalStorage";
 
 // Key name to store token in localStorage, to remember the user for re-login
 export const TOKEN_STORAGE_ID = "userToken";
@@ -23,14 +24,17 @@ export const TOKEN_STORAGE_ID = "userToken";
  */
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
-
-  //get initial currentUserToken from localStorage
-  const initialToken = localStorage.getItem(TOKEN_STORAGE_ID)
-  const [currentUserToken, setCurrentUserToken] = useState(initialToken);
+  const [currentUserToken, setCurrentUserToken] = useLocalStorage(TOKEN_STORAGE_ID);
   const [applicationIds, setApplicationIds] = useState(new Set([]));
 
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
+  console.debug("App",
+    "App",
+    "isLoading=", isLoading,
+    "currentUser=", currentUser,
+    "currentUserToken=", currentUserToken);
 
   /** Load user info from API. This effect will only run if a user is logged
    * in and have a token. The token will be saved to localStorage. 
@@ -40,80 +44,62 @@ function App() {
   useEffect(function loadUserInfoWithToken() {
     console.debug("App useEffect loadUserInfoWithToken",
       "currentUserToken=", currentUserToken);
-
-    // set currentUser token to localStorage
-    if (currentUserToken) localStorage.setItem(TOKEN_STORAGE_ID, initialToken)
-    const tokenFromLS = localStorage.getItem(TOKEN_STORAGE_ID);
    
     async function getUserFromToken() {
-      if (tokenFromLS){
+      if (currentUserToken){
         try {
-          // decode the tokenFromLS and get username
-          const { username } = jwt.decode(tokenFromLS);
+          // decode the currentUserToken and get username, returns str
+          const { username } = jwt.decode(currentUserToken);
 
           // save tokenFromLS to API class
-          JoblyApi.token = tokenFromLS;
+          JoblyApi.token = currentUserToken;
 
           // make an api request for the user info using the username
-          let currentUser1 = await JoblyApi.getUser(username);
+          let currentUser = await JoblyApi.getUser(username);
+
           // setCurrentUser based on response of api
-          setCurrentUser(currentUser1);
+          setCurrentUser(currentUser.username);
         } catch (err) {
-          setError(err);
+          setCurrentUser(null)
+          throw new Error("This user doesn't exists", err)
         } 
-        setIsLoading(true);
       }
+      setIsLoading(true);
     }
-    setIsLoading(true);
+    setIsLoading(false);
     getUserFromToken();
   }, [currentUserToken])
 
 
   /** Reset user state be empty object. */
   function logoutUser() {
-    localStorage.removeItem(TOKEN_STORAGE_ID);
     setCurrentUser(null)
     setCurrentUserToken(null);
   }
 
+  /**Log in user */
   async function login(formData) {
     const token = await JoblyApi.login(formData);
-    // const userDetail = await JoblyApi.getUser(formData.username);
-
-    // TODO why does this order matter?
-    localStorage.setItem('user', token);
     setCurrentUserToken(token);
-    // console.log('this is userDetail', userDetail)
   }
 
   async function signup(formData) {
     const newUserToken = await JoblyApi.signup(formData);
-
-    localStorage.setItem('user', newUserToken);
     setCurrentUserToken(newUserToken);
   }
 
-  // to remember a logged in user, we need a useEffect to get the user via the API using the token
-  function showLoadingOrNavbar() {
-    if (isLoading) return (<p>Loading...</p>);
-    if (error) return (<p> {error} </p>);
-  }
-
-  ///testing this line
+  // show loading 
+   if (!isLoading) return (<p>Loading...</p>);
 
   return (
     <div className="App">
-      {/* <nav class="Navigation navbar navbar-expand-md"> */}
       <BrowserRouter>
-        {showLoadingOrNavbar()}
-        <UserContext.Provider value={currentUser}>
+        <UserContext.Provider value={{currentUser, setCurrentUser}}>
           <Navbar logoutUser={logoutUser} />
-          <Routes signUp={signup}
-            login={login}
-          />
+          <Routes signup={signup}
+            login={login}/>
         </UserContext.Provider>
       </BrowserRouter>
-      {/* </nav> */}
     </div>
   );
 }

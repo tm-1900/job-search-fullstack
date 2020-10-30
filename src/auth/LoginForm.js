@@ -15,9 +15,10 @@ import Alert from "../common/Alert";
  */
 
 function LoginForm({ login }) {
-  const [formData, setFormData] = useState({ username: "", password: "" });
+  const [formData, setFormData] = useState({ username: "testuser", password: "password" });
   const [errors, setErrors] = useState([]);
 
+  const history = useHistory();
 
   console.debug(
     "LoginForm",
@@ -26,7 +27,6 @@ function LoginForm({ login }) {
     "formErrors", errors,
   );
 
-  const history = useHistory();
 
   /** Update form data field */
   function handleChange(evt) {
@@ -46,7 +46,7 @@ function LoginForm({ login }) {
     evt.preventDefault();
     try {
       await login(formData);
-      history.push("/companies");
+      history.push("/companies")
     } catch (err) {
       setErrors(err);
     }
@@ -62,30 +62,33 @@ function LoginForm({ login }) {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group">
-              <label htmlFor="LoginForm-username">username</label>
+              <label htmlFor="LoginForm-username">Username</label>
               <input
                 name="username"
                 id="LoginForm-username"
                 value={formData.username}
                 onChange={handleChange}
                 placeholder="username"
+                autoComplete="username"
               />
             </div>
 
             <div className="form-group">
-              <label htmlFor="LoginForm-password">password</label>
+              <label htmlFor="LoginForm-password">Password</label>
               <input
                 id="LoginForm-password"
                 name="password"
                 type="password"
                 value={formData.password}
                 onChange={handleChange}
+                placeholder="password"
+                autoComplete="password"
               />
             </div>
 
-            {errors.length ? <Alert messages={errors}/> : null}
+            {errors.length ? <Alert messages={errors} /> : null}
 
-            <button className="btn btn-primary float-right" >Log in</button>
+            <button className="btn btn-primary float-right" >Submit!</button>
           </form>
         </div>
 

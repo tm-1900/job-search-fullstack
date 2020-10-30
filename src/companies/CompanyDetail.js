@@ -27,7 +27,7 @@ function CompanyDetail() {
     async function fetchCompany() {
       try {
         const result = await JoblyApi.getCompany(handle);
-        console.log('this is result', result)
+        console.debug("fetchClickedCompany", "result=", result);
         setCompany(result);
       } catch (err) {
         setError(err[0])
@@ -41,7 +41,7 @@ function CompanyDetail() {
   /** Handles loading, errors, and JobCardList, and renders accordingly. 
    */
   const showLoadingOrCompany = (isLoading ? <p>Loading...</p> :
-    <div>
+    <div >
       <h4>{company.name}</h4>
       <p>{company.description}</p>
       <JobCardList jobs={company.jobs} />
@@ -50,7 +50,7 @@ function CompanyDetail() {
 
 
   return (
-    <div className="CompanyDetail col-md-8 offset-md-2">
+    <div className="CompanyDetail">
       {error ? <p> {error}</p> : showLoadingOrCompany}
     </div>
   )

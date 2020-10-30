@@ -44,8 +44,9 @@ function SearchForm({ submitSearch }) {
           name="searchTerm"
           value={formData.searchTerm}
           onChange={handleChange}
+          placeholder="Search for jobs..."
         />
-        <button>Submit</button>
+        <button type="submit" className="btn btn-sm btn-primary">Submit</button>
       </form>
     </div>
     

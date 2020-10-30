@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
-import { NavLink } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import UserContext from '../auth/UserContext';
-import { useHistory } from "react-router-dom";
+import "./Navbar.css";
 
 
 /**
@@ -17,42 +17,61 @@ import { useHistory } from "react-router-dom";
  */
 
 function Navbar({ logoutUser }) {
-  const {currentUser} = useContext(UserContext);
-  console.debug("logoutUser", logoutUser)
-  
-  const username = currentUser?.username;
+  const { currentUser } = useContext(UserContext);
+  console.debug("Navbar", "currentUser=", currentUser);
+
+  //const history = useHistory();
+
+  // function handleClick(evt) {
+  //   logoutUser();
+  //   history.push("/");
+  // }
 
 
-  const history = useHistory();
-  
-  function handleClick(evt){
-    logoutUser();
-    history.push("/");
+  function loggedInNavDisplay() {
+    return (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item mr-4">
+          <NavLink to="/companies"> Companies
+            </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink to="/jobs"> Jobs
+            </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink to="/profile"> Profile
+            </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <Link className="nav-link" to="/" onClick={logoutUser}>
+            Logout {currentUser}
+          </Link>
+        </li>
+      </ul>
+    );
+
   }
 
-
-  const loggedIn = (
-    <nav>
-      <NavLink to="/"> JobSearch </NavLink>
-      <NavLink to="/companies"> Companies </NavLink>
-      <NavLink to="/jobs"> Jobs </NavLink>
-      <NavLink to="/profile"> Profile </NavLink>
-      <button onClick={handleClick}> Logout {username}</button>
-    </nav>
-  )
-
-  const notLoggedIn = (
-    <nav>
-      <NavLink to="/">  </NavLink>
-      <NavLink to="/login"> Login </NavLink>
-      <NavLink to="/signup"> Signup</NavLink>
-    </nav>
-  )
+  function notLoggedInNavDisplay() {
+    return (
+      <ul className="navbar-nav ml-auto">
+        <li className="nav-item mr-4">
+          <NavLink to="/login"> Login </NavLink>
+        </li>
+        <li className="nav-item mr-4">
+          <NavLink to="/signup"> Signup</NavLink>
+        </li>
+      </ul>
+    );
+  }
 
   return (
-    <nav>
-      {(username !== undefined) && loggedIn}
-      {(username === undefined) && notLoggedIn}
+    <nav className="Navigation navbar navbar-expand-md">
+      <Link className="navbar-brand" to="/">
+        JobSearch
+      </Link>
+      {currentUser ? loggedInNavDisplay() : notLoggedInNavDisplay()}
     </nav>
   )
 }

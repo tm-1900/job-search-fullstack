@@ -12,7 +12,6 @@ function CompanyCard({ handle, name, description, logoUrl }) {
   //Be careful about passing down entire company object because of sensitive info;
   // sometimes may be good to pass down only certain parts.
 
-
   return (
     <div className="CompanyCard">
       <Link className="CompanyCard card" to={`/companies/${handle}`} >

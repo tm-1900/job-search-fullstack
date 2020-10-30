@@ -14,18 +14,19 @@ import Alert from "../common/Alert";
  */
 
 function SignupForm({ signup }) {
+  console.debug("SignupForm", signup)
+
   const [formData, setFormData] = useState({
-    username: "",
-    password: "",
-    firstName: "",
-    lastName: "",
-    email: ""
+    username: "Tram",
+    password: "password",
+    firstName: "Tram",
+    lastName: "Tram",
+    email: "Tram@gmail.com"
   });
   const [errors, setErrors] = useState([]);
-
   const history = useHistory();
 
-
+  console.debug("setFormData", formData)
   function handleChange(evt) {
     const { name, value } = evt.target;
     setFormData(fData => ({
@@ -37,6 +38,7 @@ function SignupForm({ signup }) {
 
   // handle form input to send to parent
   async function handleSubmit(evt) {
+    console.debug("handleSubmit", handleSubmit)
     // redirect to /companies using history
     evt.preventDefault();
     try {
