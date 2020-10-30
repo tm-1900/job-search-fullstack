@@ -26,10 +26,10 @@ export const TOKEN_STORAGE_ID = "userToken";
 function App() {
   const [currentUser, setCurrentUser] = useState(null);
   const [currentUserToken, setCurrentUserToken] = useLocalStorage(TOKEN_STORAGE_ID);
-  const [applicationIds, setApplicationIds] = useState(new Set([]));
+  //const [applicationIds, setApplicationIds] = useState(new Set([]));
 
   const [isLoading, setIsLoading] = useState(false);
-  const [error, setError] = useState(null);
+  //const [error, setError] = useState(null);
 
   console.debug("App",
     "App",
